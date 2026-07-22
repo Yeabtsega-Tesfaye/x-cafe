@@ -1,156 +1,229 @@
+# X Cafe - Development Plan
 
-# Team Task Split
+**Version:** 1.0.0
 
-I would divide it like this:
+**Status:** Planning
 
-# 👨‍💻 Person 1 (You) — Customer Experience + Ordering System
-
-Your responsibility:
-
-## 1. Project Setup
-
-* Next.js setup
-* Tailwind setup
-* Folder structure
-* Global styles
-* Documentation
+**Last Updated:** July 22, 2026
 
 ---
 
-## 2. Customer Side
+# Purpose
+
+This document defines how the development work will be divided between two developers and provides the timeline for completing the MVP within one week.
+
+The objective is to finish a fully functional version of X Cafe that includes the complete customer ordering experience, kitchen workflow, and administration dashboard.
+
+---
+
+# Team Members
+
+## Person 1
+
+Primary Responsibility:
+
+Customer Experience & Ordering System
+
+---
+
+## Person 2
+
+Primary Responsibility:
+
+Administration & Dashboard Management
+
+---
+
+# Person 1 Responsibilities
+
+## Project Foundation
+
+Responsible for:
+
+- Initial Next.js project setup
+- Tailwind CSS configuration
+- Folder structure
+- Global styling
+- Documentation
+- Customer UI architecture
+
+---
+
+## Customer Menu
 
 Build:
 
-### QR Landing
+- QR Menu page
+- Food listing
+- Category navigation
+- Search functionality
+- Food details
+- Responsive customer interface
+
+---
+
+## Shopping Cart
+
+Build:
+
+- Add items
+- Remove items
+- Increase quantity
+- Decrease quantity
+- Order summary
+- Price calculation
+
+---
+
+## Customer Ordering
+
+Build:
+
+- Checkout page
+- Order confirmation
+- Customer notes
+- Submit order
+- Order status page
+
+---
+
+## Components
+
+Responsible for:
+
+- FoodCard
+- CategoryTabs
+- MenuGrid
+- SearchBar
+- CartDrawer
+- CartItem
+- QuantitySelector
+- OrderSummary
+- StatusBadge
+
+---
+
+## Routes
+
+Responsible for:
 
 ```
 /menu/[cafeId]/[tableId]
 ```
 
-Features:
-
-* Read QR URL
-* Load café menu
-* Detect table number
-
----
-
-### Digital Menu
-
-Components:
-
 ```
-FoodCard
-CategoryTabs
-MenuGrid
-SearchBar
+/cart
 ```
 
-Features:
-
-* View categories
-* View items
-* Food images
-* Prices
-* Availability
+```
+/order
+```
 
 ---
 
-### Cart System
-
-Features:
-
-* Add items
-* Remove items
-* Quantity control
-* Total calculation
-
----
-
-### Order Placement
-
-Features:
-
-* Submit order
-* Add notes
-* Confirmation page
-
----
-
-## Files You Own
+## Folder Ownership
 
 ```
+app/menu/
+
 features/menu/
 
 features/cart/
 
 features/orders/
 
-app/menu/
-
 components/customer/
 ```
 
 ---
 
-# 👨‍💻 Person 2 — Admin + Kitchen Management
+# Person 2 Responsibilities
 
-Classmate responsibility:
-
-## 1. Authentication
+## Authentication
 
 Build:
 
-* Login
-* Logout
-* Protected routes
-* Role checking
+- Login
+- Logout
+- Session Management
+- Route Protection
+- Role Authorization
 
 ---
 
-## 2. Admin Dashboard
+## Admin Dashboard
 
-Route:
+Build:
+
+- Dashboard Overview
+- Statistics Cards
+- Menu Management
+- Category Management
+- Table Management
+- Settings
+
+---
+
+## Kitchen Dashboard
+
+Build:
+
+- Incoming Orders
+- Order Queue
+- Order Details
+- Update Order Status
+- Completed Orders
+
+---
+
+## QR Code Management
+
+Build:
+
+- Generate QR Codes
+- Download QR Codes
+- Assign QR Codes
+- Manage Tables
+
+---
+
+## Components
+
+Responsible for:
+
+- Sidebar
+- Topbar
+- DashboardCard
+- KitchenOrderCard
+- OrderQueue
+- QRCodeCard
+- TableCard
+
+---
+
+## Routes
+
+Responsible for:
+
+```
+/login
+```
 
 ```
 /dashboard
 ```
 
-Features:
-
-* Overview cards
-* Menu management
-* Table management
-
----
-
-## 3. Kitchen Dashboard
-
-Route:
-
 ```
 /kitchen
 ```
 
-Features:
-
-* View incoming orders
-* Change status
-* Order queue
+```
+/tables
+```
 
 ---
 
-## 4. QR Management
-
-Features:
-
-* Create tables
-* Generate QR codes
-* Download QR
-
----
-
-## Files They Own
+## Folder Ownership
 
 ```
 features/auth/
@@ -166,9 +239,11 @@ components/admin/
 
 ---
 
-# Shared Work (Both)
+# Shared Responsibilities
 
-You both review:
+Both developers are responsible for reviewing and maintaining the following parts of the project.
+
+---
 
 ## Database
 
@@ -176,90 +251,318 @@ You both review:
 prisma/schema.prisma
 ```
 
-Together.
+Responsibilities:
+
+- Design schema
+- Review relationships
+- Create migrations
+- Verify data integrity
 
 ---
 
-## API Contracts
+## API Design
 
-Before coding:
+Agree on every endpoint before implementation.
 
-Agree on:
+Examples:
 
 ```
-POST /orders
+GET    /api/menu
 
-GET /menu
+POST   /api/orders
 
-PATCH /orders/:id
+PATCH  /api/orders/:id
+
+GET    /api/dashboard
+
+POST   /api/login
 ```
 
 ---
 
-## UI Components
-
-Shared:
+## Shared UI Components
 
 ```
 components/ui/
 ```
 
----
+Examples:
 
-# Development Order
-
-Follow this sequence:
-
-## Week 1
-
-Both:
-
-* Setup project
-* Complete docs
-* Setup database
+- Button
+- Input
+- Card
+- Badge
+- Dialog
+- Toast
+- Skeleton
+- Table
+- Dropdown
 
 ---
 
-## Week 2
+## Code Reviews
 
-You:
-
-* Customer menu
-* Cart
-
-Classmate:
-
-* Authentication
-* Dashboard layout
+Every completed feature should be reviewed by the other developer before merging into the development branch.
 
 ---
 
-## Week 3
+# Git Workflow
 
-You:
+## Main Branch
 
-* Order creation
+Production-ready code only.
 
-Classmate:
-
-* Kitchen dashboard
-
----
-
-## Week 4
-
-Both:
-
-* Connect everything
-* Testing
-* Deployment
+```
+main
+```
 
 ---
 
-This split is balanced because both people are building **real features**, not one person doing "everything important" while the other only styles pages.
+## Development Branch
 
-For your portfolio too, this gives you a strong story:
+Shared integration branch.
 
-> "Built a full-stack SaaS QR ordering platform with real-time kitchen management using Next.js, TypeScript, Prisma, PostgreSQL, and Socket.IO."
+```
+development
+```
 
-That's a much stronger project than a normal CRUD app.
+---
+
+## Personal Branches
+
+Person 1
+
+```
+feature/customer-ordering
+```
+
+Person 2
+
+```
+feature/admin-dashboard
+```
+
+Workflow
+
+```
+Feature Branch
+
+↓
+
+Development Branch
+
+↓
+
+Testing
+
+↓
+
+Main Branch
+```
+
+---
+
+# Development Timeline
+
+The goal is to complete the MVP within **7 days**.
+
+---
+
+# Day 1
+
+## Both
+
+- Create GitHub repository
+- Clone project
+- Install dependencies
+- Configure Prisma
+- Configure PostgreSQL
+- Configure Better Auth
+- Configure shadcn/ui
+- Configure Socket.IO
+- Create project structure
+- Complete project documentation
+- Define API contracts
+
+### Deliverable
+
+Project setup completed and running locally.
+
+---
+
+# Day 2
+
+## Person 1
+
+- Build QR Menu page
+- Food cards
+- Categories
+- Search
+- Customer layout
+
+## Person 2
+
+- Authentication
+- Login page
+- Dashboard layout
+- Sidebar
+- Top navigation
+
+### Deliverable
+
+Customer can browse menu.
+
+Admin can access dashboard.
+
+---
+
+# Day 3
+
+## Person 1
+
+- Shopping cart
+- Quantity controls
+- Order summary
+- Checkout page
+
+## Person 2
+
+- Menu management
+- Category management
+- Table management
+- QR generation
+
+### Deliverable
+
+Customer can prepare an order.
+
+Admin can manage café information.
+
+---
+
+# Day 4
+
+## Person 1
+
+- Submit order
+- Order confirmation
+- Customer status page
+
+## Person 2
+
+- Kitchen dashboard
+- Order queue
+- Update order status
+
+### Deliverable
+
+Complete order flow between customer and kitchen.
+
+---
+
+# Day 5
+
+## Both
+
+- Connect frontend and backend
+- Implement API endpoints
+- Connect database
+- Implement real-time updates
+- Verify complete workflow
+
+### Deliverable
+
+Complete ordering system works end-to-end.
+
+---
+
+# Day 6
+
+## Both
+
+- Responsive design improvements
+- Loading states
+- Error handling
+- Validation
+- Bug fixes
+- UI polishing
+
+### Deliverable
+
+Stable MVP ready for testing.
+
+---
+
+# Day 7
+
+## Both
+
+- Final testing
+- Cross-browser testing
+- Performance optimization
+- Deployment
+- Prepare demo data
+- Prepare presentation
+
+### Deliverable
+
+Publicly deployed MVP.
+
+---
+
+# Definition of Done
+
+The project is considered complete when the following functionality works correctly.
+
+## Customer
+
+- Scan QR code
+- View digital menu
+- Search menu
+- Add items to cart
+- Modify quantities
+- Place order
+- Track order status
+
+---
+
+## Kitchen
+
+- Receive new orders
+- View order queue
+- Update order status
+- Complete orders
+
+---
+
+## Administrator
+
+- Login
+- Manage menu
+- Manage categories
+- Manage tables
+- Generate QR codes
+- View dashboard
+
+---
+
+# Project Deliverables
+
+By the end of the project, the following should be completed.
+
+- Fully responsive web application
+- Customer ordering system
+- Kitchen dashboard
+- Admin dashboard
+- Authentication
+- Database integration
+- Real-time order updates
+- QR code ordering
+- Online deployment
+- Complete documentation
+
+---
+
+# Success Criteria
+
+The MVP is successful when a customer can scan a QR code, browse the menu, place an order, and receive live status updates while café staff manage orders through the kitchen dashboard and administrators manage the café through the admin dashboard without any manual ordering process.
