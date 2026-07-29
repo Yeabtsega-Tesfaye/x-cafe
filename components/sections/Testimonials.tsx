@@ -1,4 +1,5 @@
 import { Star } from "lucide-react";
+import { FadeUp, StaggerContainer, StaggerItem } from "../ui/FadeUp";
 
 export default function Testimonials() {
   const reviews = [
@@ -19,22 +20,27 @@ export default function Testimonials() {
   return (
     <section className="px-8 py-24">
       <div className="mx-auto max-w-6xl">
+        
+        {/* Standalone fade-ups for the headers */}
+        <FadeUp>
+          <p className="text-sm font-semibold uppercase tracking-widest text-orange-500">
+            Testimonials
+          </p>
+        </FadeUp>
 
-        <p className="text-sm font-semibold uppercase tracking-widest text-orange-500">
-          Testimonials
-        </p>
+        <FadeUp delay={0.1}>
+          <h2 className="mt-4 text-4xl font-bold">
+            What Our Customers Say
+          </h2>
+        </FadeUp>
 
-        <h2 className="mt-4 text-4xl font-bold">
-          What Our Customers Say
-        </h2>
-
-        <div className="mt-12 grid gap-6 md:grid-cols-3">
+        {/* Staggered grid for the testimonial cards */}
+        <StaggerContainer className="mt-12 grid gap-6 md:grid-cols-3">
           {reviews.map((review) => (
-            <div
+            <StaggerItem
               key={review.name}
               className="rounded-2xl border bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-md"
             >
-
               <div className="flex gap-1 text-orange-500">
                 {[1, 2, 3, 4, 5].map((star) => (
                   <Star
@@ -52,10 +58,9 @@ export default function Testimonials() {
               <h3 className="mt-5 font-semibold">
                 {review.name}
               </h3>
-
-            </div>
+            </StaggerItem>
           ))}
-        </div>
+        </StaggerContainer>
 
       </div>
     </section>

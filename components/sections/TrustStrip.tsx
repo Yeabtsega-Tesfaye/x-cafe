@@ -4,6 +4,7 @@ import {
   HandHeart,
   QrCode,
 } from "lucide-react";
+import { StaggerContainer, StaggerItem } from "../ui/FadeUp";
 
 const highlights = [
   {
@@ -34,17 +35,19 @@ const highlights = [
 
 export default function TrustStrip() {
   return (
-    <section className="bg-slate-50 px-6 py-16 lg:px-8">
+    <section className="bg-slate-50 px-6 py-6 lg:px-8">
       <div className="mx-auto max-w-7xl">
-        <div className="overflow-hidden rounded-[2rem] border border-slate-200 bg-white shadow-lg shadow-slate-200/50">
+        {/* Replaced the standard div with our StaggerContainer */}
+        <StaggerContainer className="overflow-hidden rounded-[2rem] border border-slate-200 bg-white shadow-lg shadow-slate-200/50">
           <div className="grid divide-y divide-slate-200 md:grid-cols-2 md:divide-x md:divide-y-0 xl:grid-cols-4">
+            
             {highlights.map((item) => {
               const Icon = item.icon;
 
               return (
-                <div
+                <StaggerItem
                   key={item.title}
-                  className="flex flex-col items-center px-8 py-10 text-center transition-all duration-200 hover:bg-slate-50"
+                  className="flex flex-col items-center px-4 py-6 text-center transition-all duration-200 hover:bg-slate-50"
                 >
                   <div className="flex h-20 w-20 items-center justify-center rounded-full bg-orange-50">
                     <Icon className="h-9 w-9 text-orange-500" />
@@ -59,11 +62,12 @@ export default function TrustStrip() {
                   <p className="mt-5 text-base leading-7 text-slate-600">
                     {item.description}
                   </p>
-                </div>
+                </StaggerItem>
               );
             })}
+            
           </div>
-        </div>
+        </StaggerContainer>
       </div>
     </section>
   );
