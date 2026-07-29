@@ -1,11 +1,87 @@
 @import "tailwindcss";
 
 @theme inline {
-  --color-background: var(--background);
-  --color-surface: var(--surface);
+  --background: #FFFFFF;
+  --background-secondary: #F8FAFC;
+  --foreground: #0F172A;
+  --primary: #0F172A;
+  --accent: #F97316;
+  --border-color: #E2E8F0;
+  --success: #22C55E;
+  --warning: #F59E0B;
+  --danger: #EF4444;
+}
+:root {
+  /* ---- Raw design tokens — source: DESIGN.md ---- */
 
+  /* Colors */
+  --background: #FFFFFF;
+  --background-secondary: #F8FAFC;
+  --foreground: #0F172A;
+  --primary: #0F172A;
+  --accent: #F97316;
+  --border-color: #E2E8F0;
+
+  --success: #22C55E;
+  --warning: #F59E0B;
+  --danger: #EF4444;
+
+  --text-primary: #0F172A;
+  --text-secondary: #64748B;
+  --text-muted: #94A3B8;
+
+  /* Typography */
+  --text-h1: 36px;
+  --text-h2: 30px;
+  --text-h3: 24px;
+  --text-h4: 20px;
+  --text-body: 16px;
+  --text-small: 14px;
+  --text-caption: 12px;
+
+  /* Radius */
+  --radius-button: 12px;
+  --radius-card: 16px;
+  --radius-input: 12px;
+  --radius-dialog: 20px;
+
+  /* Spacing — 8px scale */
+  --space-1: 8px;
+  --space-2: 16px;
+  --space-3: 24px;
+  --space-4: 32px;
+  --space-6: 48px;
+  --space-8: 64px;
+
+  /* Motion */
+  --duration-fast: 150ms;
+  --duration-normal: 250ms;
+
+  /* Layout */
+  --content-max-width: 1440px;
+
+  /* Shadows — soft only, per DESIGN.md */
+  --shadow-card: 0px 1px 2px rgba(15, 23, 42, 0.04), 0px 4px 12px rgba(15, 23, 42, 0.06);
+}
+
+
+@theme {
+  --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+  
+  --font-heading: var(--font-outfit), ui-sans-serif, system-ui, sans-serif;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-background-secondary: var(--background-secondary);
+  --color-foreground: var(--foreground);
   --color-primary: var(--primary);
   --color-accent: var(--accent);
+  --color-border: var(--border-color);
+
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-danger: var(--danger);
 
   --color-text-primary: var(--text-primary);
   --color-text-secondary: var(--text-secondary);
@@ -78,6 +154,26 @@
   --transition-fast: 150ms ease-in-out;
   --transition-normal: 200ms ease-in-out;
   --transition-slow: 250ms ease-in-out;
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+
+  --radius-button: var(--radius-button);
+  --radius-card: var(--radius-card);
+  --radius-input: var(--radius-input);
+  --radius-dialog: var(--radius-dialog);
+
+  --spacing-1: var(--space-1);
+  --spacing-2: var(--space-2);
+  --spacing-3: var(--space-3);
+  --spacing-4: var(--space-4);
+  --spacing-6: var(--space-6);
+  --spacing-8: var(--space-8);
+}
+
+@layer base {
+  h1, h2, h3, h4, h5, h6, p, div {
+    font-family: var(--font-heading);
+  }
 }
 
 .dark {
@@ -1193,4 +1289,23 @@ body {
   .stats-grid {
     grid-template-columns: 1fr;
   }
+}
+body {
+  font-family: var(--font-geist-sans), Inter, Arial, Helvetica, sans-serif;
+  font-size: var(--text-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+h1 { font-size: var(--text-h1); font-weight: 600; }
+h2 { font-size: var(--text-h2); font-weight: 600; }
+h3 { font-size: var(--text-h3); font-weight: 600; }
+h4 { font-size: var(--text-h4); font-weight: 600; }
+
+.text-small   { font-size: var(--text-small); }
+.text-caption { font-size: var(--text-caption); color: var(--text-muted); }
+
+/* Design Rules: max content width 1440px */
+.content-container {
+  max-width: var(--content-max-width);
+  margin-inline: auto;
 }

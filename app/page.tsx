@@ -1,15 +1,17 @@
-import Header from "../components/home/Header";
-import Hero from "../components/home/Hero";
-import TrustStrip from "../components/home/TrustStrip";
-import Services from "../components/home/Services";
-import Menu from "../components/home/Menu";
-import About from "../components/home/About";
-import Testimonials from "../components/home/Testimonials";
-import CTA from "../components/home/CTA";
-import Footer from "../components/home/Footer";
+import ScrollProgress from "@/components/layout/ScrollProgress";
+import Header from "../components/layout/Header";
+import Hero from "../components/sections/Hero";
+import TrustStrip from "../components/sections/TrustStrip";
+import Services from "../components/sections/Services";
+import Menu from "../components/sections/Menu";
+import About from "../components/sections/About";
+import Testimonials from "../components/sections/Testimonials";
+import CTA from "../components/sections/CTA";
+import Footer from "../components/layout/Footer";
 export default function Home() {
   return (
     <main>
+      <ScrollProgress />
       <Header />
       <Hero />
       <TrustStrip />
