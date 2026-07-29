@@ -1,12 +1,12 @@
-import Header from "../components/Header";
-import Hero from "../components/Hero";
-import TrustStrip from "../components/TrustStrip";
-import Services from "../components/Services";
-import Menu from "../components/Menu";
-import About from "../components/About";
-import Testimonials from "../components/Testimonials";
-import CTA from "../components/CTA";
-import Footer from "../components/Footer";
+import Header from "../components/home/Header";
+import Hero from "../components/home/Hero";
+import TrustStrip from "../components/home/TrustStrip";
+import Services from "../components/home/Services";
+import Menu from "../components/home/Menu";
+import About from "../components/home/About";
+import Testimonials from "../components/home/Testimonials";
+import CTA from "../components/home/CTA";
+import Footer from "../components/home/Footer";
 export default function Home() {
   return (
     <main>
