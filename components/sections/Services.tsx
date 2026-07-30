@@ -5,6 +5,7 @@ import {
   CalendarHeart,
   ArrowRight,
 } from "lucide-react";
+import { FadeUp, StaggerContainer, StaggerItem } from "../ui/FadeUp";
 
 const services = [
   {
@@ -38,27 +39,35 @@ export default function Services() {
     <section className="bg-white px-6 py-24 lg:px-8">
       <div className="mx-auto max-w-7xl">
         <div className="max-w-3xl">
-          <p className="text-sm font-semibold uppercase tracking-[0.2em] text-orange-500">
-            Experience X Cafe
-          </p>
+          {/* Header block cascading fade-ups */}
+          <FadeUp>
+            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-orange-500">
+              Experience X Cafe
+            </p>
+          </FadeUp>
 
-          <h2 className="mt-4 text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl">
-            Designed Around Every Visit
-          </h2>
+          <FadeUp delay={0.1}>
+            <h2 className="mt-4 text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl lg:text-6xl">
+              Designed Around Every Visit
+            </h2>
+          </FadeUp>
 
-          <p className="mt-6 text-lg leading-8 text-slate-600">
-            Whether you`re stopping by for your morning coffee, enjoying lunch
-            with friends, or ordering on the go, every experience at X Cafe is
-            thoughtfully designed to be simple, comfortable, and memorable.
-          </p>
+          <FadeUp delay={0.2}>
+            <p className="mt-6 text-lg leading-relaxed text-slate-600">
+              Whether you're stopping by for your morning coffee, enjoying lunch
+              with friends, or ordering on the go, every experience at X Cafe is
+              thoughtfully designed to be simple, comfortable, and memorable.
+            </p>
+          </FadeUp>
         </div>
 
-        <div className="mt-16 grid gap-8 md:grid-cols-2 xl:grid-cols-4">
+        {/* Staggered grid for the service cards */}
+        <StaggerContainer className="mt-16 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
           {services.map((service) => {
             const Icon = service.icon;
 
             return (
-              <article
+              <StaggerItem
                 key={service.title}
                 className="group flex h-full flex-col rounded-[24px] border border-slate-200 bg-white p-8 shadow-sm transition-all duration-300 hover:-translate-y-2 hover:border-orange-200 hover:shadow-xl"
               >
@@ -78,10 +87,10 @@ export default function Services() {
                   Learn More
                   <ArrowRight className="h-4 w-4" />
                 </button>
-              </article>
+              </StaggerItem>
             );
           })}
-        </div>
+        </StaggerContainer>
       </div>
     </section>
   );
