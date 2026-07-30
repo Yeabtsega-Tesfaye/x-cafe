@@ -13,13 +13,18 @@ import {
 import { motion, AnimatePresence } from "framer-motion";
 import { FadeUp, StaggerContainer, StaggerItem } from "@/components/ui/FadeUp";
 import { CATEGORIES, FULL_MENU } from "@/data/menu";
+import { useCartStore } from "@/features/orders/store/useCartStore";
+import { FloatingCart } from "@/features/orders/components/FloatingCart";
 
 type ViewMode = "grid" | "list";
 interface MenuPageProps {
   tableNumber?: number;
+  tableId?: string;
 }
 
-export function MenuPage({ tableNumber }: MenuPageProps) {
+export function MenuPage({ tableNumber, tableId }: MenuPageProps) {
+  const addItem = useCartStore((state) => state.addItem);
+
   const [activeCategory, setActiveCategory] = useState("All");
   const [viewMode, setViewMode] = useState<ViewMode>("grid");
   const [searchQuery, setSearchQuery] = useState("");
@@ -33,6 +38,10 @@ export function MenuPage({ tableNumber }: MenuPageProps) {
       .includes(searchQuery.trim().toLowerCase());
     return matchesCategory && matchesSearch;
   });
+
+  const parsePrice = (priceStr: string) => {
+    return parseFloat(priceStr.replace(/[^0-9.]/g, ""));
+  };
 
   return (
     <div className="min-h-screen bg-background pt-32 pb-24">
@@ -84,7 +93,7 @@ export function MenuPage({ tableNumber }: MenuPageProps) {
                 <SlidersHorizontal className="h-3 w-3" />
                 Filters
                 {activeCategory !== "All" && !isFilterOpen && (
-                  <span className="absolute -right-1 -top-1 h-2.5 w-2.5 rounded-full bg-accent ring-2 ring-background" />
+                  <span className="absolute -right-1 -top-1 h-2 w-2.5 rounded-full bg-accent ring-2 ring-background" />
                 )}
               </button>
 
@@ -222,7 +231,16 @@ export function MenuPage({ tableNumber }: MenuPageProps) {
                       {item.description}
                     </p>
 
-                    <button className="mt-4 inline-flex items-center gap-1.5 self-start text-sm font-bold text-accent transition-all duration-200 group-hover:gap-2.5">
+                    <button
+                      onClick={() =>
+                        addItem({
+                          id: item.name,
+                          name: item.name,
+                          price: parsePrice(item.price),
+                        })
+                      }
+                      className="mt-4 inline-flex items-center gap-1.5 self-start text-sm font-bold text-accent transition-all duration-200 group-hover:gap-2.5"
+                    >
                       Add to Order
                       <ArrowRight className="h-4 w-4" />
                     </button>
@@ -262,10 +280,16 @@ export function MenuPage({ tableNumber }: MenuPageProps) {
                       {item.description}
                     </p>
                   </div>
-
                   <button
+                    onClick={() =>
+                      addItem({
+                        id: item.name,
+                        name: item.name,
+                        price: parsePrice(item.price),
+                      })
+                    }
                     aria-label={`Add ${item.name} to order`}
-                    className="shrink-0 rounded-button bg-accent px-4 py-2 text-xs font-bold text-white transition-colors hover:brightness-95 sm:text-sm"
+                    className="shrink-0 rounded-button bg-accent px-4 py-2 text-xs font-bold text-white transition-colors hover:brightness-95 sm:text-sm active:scale-95"
                   >
                     Add
                   </button>
@@ -275,6 +299,7 @@ export function MenuPage({ tableNumber }: MenuPageProps) {
           )}
         </div>
       </section>
+      <FloatingCart tableId={tableId} />
     </div>
   );
 }
