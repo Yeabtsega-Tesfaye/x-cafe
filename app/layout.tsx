@@ -1,16 +1,18 @@
-// app/layout.tsx
 import { Outfit, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
+import ScrollProgress from "@/components/layout/ScrollProgress";
+import Header from "@/components/layout/Header";
+import Footer from "@/components/layout/Footer";
 
 // Setup heading font
-const outfit = Outfit({ 
+const outfit = Outfit({
   subsets: ["latin"],
   variable: "--font-outfit",
   display: "swap",
 });
 
 // Setup body font
-const jakarta = Plus_Jakarta_Sans({ 
+const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
   variable: "--font-jakarta",
   display: "swap",
@@ -29,9 +31,11 @@ export default function RootLayout({
   return (
     // Inject the CSS variables into the HTML tag
     <html lang="en" className={`${outfit.variable} ${jakarta.variable} scroll-smooth`}>
-      {/* Apply the body font by default and add antialiasing for smoothness */}
       <body className="font-sans antialiased bg-background text-text-primary">
-        {children}
+        <ScrollProgress />
+        <Header />
+        <main>{children}</main>
+        <Footer />
       </body>
     </html>
   );
