@@ -84,7 +84,7 @@ export function MenuPage({ tableNumber, tableId }: MenuPageProps) {
               <button
                 onClick={() => setIsFilterOpen((v) => !v)}
                 aria-expanded={isFilterOpen}
-                className={`relative flex items-center rounded-button border p-2 text-sm font-bold transition-colors ${
+                className={`relative flex items-center rounded-button border p-1 text-sm font-bold transition-colors ${
                   isFilterOpen
                     ? "border-accent bg-accent text-white"
                     : "border-border bg-background-secondary text-text-secondary hover:text-text-primary"
