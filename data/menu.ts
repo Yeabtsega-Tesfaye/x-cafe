@@ -23,7 +23,7 @@ export const FULL_MENU = [
     category: "Drinks",
     price: "ETB 50",
     badge: "Traditional",
-    image: "/images/ethiopian-coffee.jpg",
+    image: "/images/jebena-buna.jpg",
     description: "Authentic Ethiopian coffee roasted, ground, and brewed in a traditional clay pot.",
   },
   {
@@ -38,14 +38,14 @@ export const FULL_MENU = [
     name: "Ethiopian Spiced Tea",
     category: "Drinks",
     price: "ETB 30",
-    image: "/images/spris-juice.jpg",
+    image: "/images/spiced-tea.jpg",
     description: "Hot black tea steeped with aromatic spices including cardamom, cinnamon, and cloves.",
   },
   {
     name: "Ambo Mineral Water",
     category: "Drinks",
     price: "ETB 40",
-    image: "/images/spris-juice.jpg",
+    image: "/images/ambo.jpg",
     description: "Refreshing naturally carbonated mineral water sourced locally.",
   },
 
@@ -55,7 +55,7 @@ export const FULL_MENU = [
     category: "Breakfast",
     price: "ETB 250",
     badge: "Classic",
-    image: "/images/tibs.jpg",
+    image: "/images/frfr.jpg",
     description: "Torn pieces of fresh injera soaked in a rich, spicy berbere and tomato sauce.",
   },
   {
@@ -71,14 +71,14 @@ export const FULL_MENU = [
     category: "Breakfast",
     price: "ETB 350",
     badge: "Local Favorite",
-    image: "/images/tibs.jpg", 
+    image: "/images/Chechebsa.jpg", 
     description: "Lightly fried flatbread shredded and mixed with spiced butter and traditional berbere.",
   },
   {
     name: "Enkulal Firfir",
     category: "Breakfast",
     price: "ETB 250",
-    image: "/images/tibs.jpg", 
+    image: "/images/scrambled-egg.jpg", 
     description: "Ethiopian-style scrambled eggs cooked with tomatoes, onions, and jalapeños, served with fresh bread.",
   },
   {
@@ -86,7 +86,7 @@ export const FULL_MENU = [
     category: "Breakfast",
     price: "ETB 300",
     badge: "Popular",
-    image: "/images/tibs.jpg", 
+    image: "/images/full.jpg", 
     description: "Hearty fava bean stew topped with scrambled eggs, fresh tomatoes, onions, and a drizzle of oil.",
   },
   
@@ -103,7 +103,7 @@ export const FULL_MENU = [
     name: "Shiro Tegamino",
     category: "Lunch & Dinner",
     price: "ETB 350",
-    image: "/images/doro-wat.jpg", 
+    image: "/images/shiro.jpg", 
     description: "A delicious and creamy spiced chickpea stew served bubbling hot in a traditional clay pot.",
   },
   {
@@ -111,7 +111,7 @@ export const FULL_MENU = [
     category: "Lunch & Dinner",
     price: "ETB 450",
     badge: "Vegan Friendly",
-    image: "/images/doro-wat.jpg", 
+    image: "/images/aynet.jpg", 
     description: "A colorful mixed platter of various vegetable and lentil stews served over fresh injera.",
   },
 
@@ -120,7 +120,7 @@ export const FULL_MENU = [
     name: "Classic Beef Burger",
     category: "Fast Food",
     price: "ETB 400",
-    image: "/images/doro-wat.jpg",
+    image: "/images/burger.jpg",
     description: "Juicy beef patty with fresh lettuce, tomato, onions, and house sauce, served with crispy fries.",
   },
   {
@@ -128,7 +128,7 @@ export const FULL_MENU = [
     category: "Fast Food",
     price: "ETB 550",
     badge: "Signature",
-    image: "/images/doro-wat.jpg",
+    image: "/images/special-pizza.jpg",
     description: "Oven-baked pizza topped with a rich tomato sauce, melted mozzarella, seasonal veggies, and seasoned meat.",
   },
 
@@ -147,7 +147,7 @@ export const FULL_MENU = [
     name: "Almond Croissant",
     category: "Pastries",
     price: "ETB 200",
-    image: "/images/doro-wat.jpg", 
+    image: "/images/croissants.jpg", 
     description: "Flaky, buttery croissant baked fresh daily and topped with toasted almonds.",
   },
   {
@@ -155,14 +155,14 @@ export const FULL_MENU = [
     category: "Pastries",
     price: "ETB 50",
     badge: "Bite Sized",
-    image: "/images/doro-wat.jpg", 
+    image: "/images/sambusa.jpg", 
     description: "Crispy, savory pastry filled with spiced brown lentils, onions, and fresh herbs.",
   },
   {
     name: "Bombolino",
     category: "Pastries",
     price: "ETB 60",
-    image: "/images/doro-wat.jpg", 
+    image: "/images/bombolino.jpg", 
     description: "A warm, fluffy Ethiopian-style donut lightly dusted with powdered sugar.",
   }
 ];
