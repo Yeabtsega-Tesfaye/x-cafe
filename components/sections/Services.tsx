@@ -36,7 +36,7 @@ const services = [
 
 export default function Services() {
   return (
-    <section className="bg-white px-6 py-24 lg:px-8">
+    <section className="bg-white px-6 py-24 lg:px-8" id="services">
       <div className="mx-auto max-w-7xl">
         <div className="max-w-3xl">
           {/* Header block cascading fade-ups */}
