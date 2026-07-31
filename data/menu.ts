@@ -8,6 +8,41 @@ export const CATEGORIES = [
   "Pastries"
 ];
 
+export const FEATURED_FOOD = [
+  {
+    name: "Ethiopian Macchiato",
+    category: "Coffee",
+    price: "ETB 100",
+    badge: "Signature",
+    image: "/images/ethiopian-coffee.jpg",
+    description: "A rich Ethiopian coffee experience with smooth espresso and perfectly steamed milk.",
+  },
+  {
+    name: "Doro Wat",
+    category: "Chef's Pick",
+    price: "ETB 650",
+    badge: "Chef's Pick",
+    image: "/images/doro-wat.jpg",
+    description: "A traditional Ethiopian dish prepared with slow-cooked chicken, spices, and authentic flavors.",
+  },
+  {
+    name: "Special Tibs",
+    category: "Lunch & Dinner",
+    price: "ETB 550",
+    badge: "Popular",
+    image: "/images/tibs.jpg",
+    description: "Tender pieces of meat sautéed with fresh ingredients and traditional Ethiopian spices.",
+  },
+  {
+    name: "Fresh Avocado Toast",
+    category: "Breakfast",
+    price: "ETB 350",
+    badge: "Fresh",
+    image: "/images/avocado-toast.jpg",
+    description: "A modern breakfast favorite made with fresh avocado and quality ingredients.",
+  },
+];
+
 export const FULL_MENU = [
   // DRINKS
   {
@@ -166,3 +201,4 @@ export const FULL_MENU = [
     description: "A warm, fluffy Ethiopian-style donut lightly dusted with powdered sugar.",
   }
 ];
+

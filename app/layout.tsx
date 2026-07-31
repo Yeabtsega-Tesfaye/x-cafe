@@ -2,6 +2,7 @@ import { Outfit, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import ScrollProgress from "@/components/layout/ScrollProgress";
 import Header from "@/components/layout/Header";
+import { FloatingCart } from "@/features/orders/components/FloatingCart";
 import Footer from "@/components/layout/Footer";
 
 // Setup heading font
@@ -35,6 +36,7 @@ export default function RootLayout({
         <ScrollProgress />
         <Header />
         <main>{children}</main>
+        <FloatingCart />
         <Footer />
       </body>
     </html>

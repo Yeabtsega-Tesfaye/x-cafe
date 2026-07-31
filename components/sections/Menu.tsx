@@ -1,49 +1,23 @@
+"use client";
+
 import Image from "next/image";
+import Link from "next/link";
 import { ArrowRight, Star } from "lucide-react";
 import { FadeUp, StaggerContainer, StaggerItem } from "../ui/FadeUp";
-
-const items = [
-  {
-    name: "Ethiopian Macchiato",
-    category: "Coffee",
-    price: "$4.50",
-    badge: "Signature",
-    image: "/images/ethiopian-coffee.jpg",
-    description:
-      "A rich Ethiopian coffee experience with smooth espresso and perfectly steamed milk.",
-  },
-  {
-    name: "Doro Wat",
-    category: "Traditional",
-    price: "$12.00",
-    badge: "Chef's Pick",
-    image: "/images/doro-wat.jpg",
-    description:
-      "A traditional Ethiopian dish prepared with slow-cooked chicken, spices, and authentic flavors.",
-  },
-  {
-    name: "Special Tibs",
-    category: "Traditional",
-    price: "$10.00",
-    badge: "Popular",
-    image: "/images/tibs.jpg",
-    description:
-      "Tender pieces of meat sautéed with fresh ingredients and traditional Ethiopian spices.",
-  },
-  {
-    name: "Fresh Avocado Toast",
-    category: "Breakfast",
-    price: "$7.50",
-    badge: "Fresh",
-    image: "/images/avocado-toast.jpg",
-    description:
-      "A modern breakfast favorite made with fresh avocado and quality ingredients.",
-  },
-];
+import { FEATURED_FOOD } from "@/data/menu";
+import { useCartStore } from "@/features/orders/store/useCartStore";
 
 export default function Menu() {
+  // Pull the addItem function from your global cart store
+  const addItem = useCartStore((state) => state.addItem);
+
+  // Helper to convert "ETB 100" into a clean number (100)
+  const parsePrice = (priceStr: string) => {
+    return parseFloat(priceStr.replace(/[^0-9.]/g, ""));
+  };
+
   return (
-    <section className="bg-background-secondary px-6 py-24 lg:px-8">
+    <section id="menu" className="bg-background-secondary px-6 py-24 lg:px-8">
       <div className="mx-auto max-w-7xl">
 
         {/* Heading */}
@@ -70,7 +44,7 @@ export default function Menu() {
 
         {/* Menu Cards */}
         <StaggerContainer className="mt-16 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
-          {items.map((item) => (
+          {FEATURED_FOOD.map((item) => (
             <StaggerItem
               key={item.name}
               className="group overflow-hidden rounded-card border border-border bg-background shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl"
@@ -117,7 +91,17 @@ export default function Menu() {
                   <Star className="h-4 w-4 fill-accent text-accent" />
                 </div>
 
-                <button className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-accent transition-all duration-200 group-hover:gap-3">
+                {/* The fully functional Add to Cart button */}
+                <button 
+                  onClick={() =>
+                    addItem({
+                      id: item.name,
+                      name: item.name,
+                      price: parsePrice(item.price),
+                    })
+                  }
+                  className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-accent transition-all duration-200 group-hover:gap-3 active:scale-95"
+                >
                   Order Now
                   <ArrowRight className="h-4 w-4" />
                 </button>
@@ -125,6 +109,17 @@ export default function Menu() {
             </StaggerItem>
           ))}
         </StaggerContainer>
+        
+        {/* The Stylish "View Full Menu" button you asked for */}
+        <FadeUp delay={0.3} className="mt-16 flex justify-center">
+          <Link
+            href="/menu"
+            className="inline-flex items-center gap-2 rounded-button bg-accent px-8 py-4 font-bold text-white shadow-lg transition-transform hover:scale-105 active:scale-95"
+          >
+            View Full Menu
+            <ArrowRight className="h-5 w-5" />
+          </Link>
+        </FadeUp>
 
       </div>
     </section>

@@ -4,24 +4,26 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
+import { useCartStore } from "@/features/orders/store/useCartStore";
 
+// 1. Fixed the spacing typo in the contact href and made them absolute paths
 const NAV_LINKS = [
   { href: "/", label: "Home" },
-  { href: "/menu", label: "Menu" },
   { href: "/#services", label: "Services" },
-  { href: "/ #contact", label: "Contact" },
+  { href: "/#menu", label: "Menu" },
+  { href: "/#contact", label: "Contact" },
 ];
 
 export default function Header() {
   const pathname = usePathname();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState("");
+  const [activeSection, setActiveSection] = useState(pathname);
   const [indicatorStyle, setIndicatorStyle] = useState<{
     left?: number;
     width?: number;
     opacity?: number;
-  }>({});
+  }>({ opacity: 0 });
   
   const linksRef = useRef<(HTMLAnchorElement | null)[]>([]);
   const mobileNavRef = useRef<HTMLDivElement>(null);
@@ -33,32 +35,50 @@ export default function Header() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Set active state based on current page or scroll position
+  // 2. Upgraded Active State Logic
   useEffect(() => {
-    if (pathname === "/menu") {
-      setActiveSection("/menu");
+    // If we are not on the homepage, just set the active section to the pathname
+    if (pathname !== "/") {
+      setActiveSection(pathname);
       return;
     }
 
-    // Only run the intersection observer if we are on the homepage
-    if (pathname === "/") {
-      const sections = NAV_LINKS
-        .filter((link) => link.href.startsWith("#")) // Ignore route links like /menu
-        .map((link) => document.querySelector(link.href))
-        .filter((el): el is Element => el !== null);
+    // If we are on the homepage, default to Home
+    setActiveSection("/");
 
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) setActiveSection(`#${entry.target.id}`);
-          });
-        },
-        { threshold: 0.35 }
-      );
+    // Find the sections that actually exist on the page
+    const sections = NAV_LINKS
+      .filter((link) => link.href.includes("#"))
+      .map((link) => {
+        const id = link.href.split("#")[1];
+        return document.getElementById(id);
+      })
+      .filter((el): el is HTMLElement => el !== null);
 
-      sections.forEach((section) => observer.observe(section));
-      return () => sections.forEach((section) => observer.unobserve(section));
-    }
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          // Add a root margin offset so it triggers slightly before the element hits the top
+          if (entry.isIntersecting) {
+            setActiveSection(`/#${entry.target.id}`);
+          }
+        });
+      },
+      { threshold: 0.5, rootMargin: "-80px 0px 0px 0px" } 
+    );
+
+    sections.forEach((section) => observer.observe(section));
+
+    // Fallback: If we scroll all the way to the top, force "Home" to be active
+    const onScrollTop = () => {
+      if (window.scrollY < 100) setActiveSection("/");
+    };
+    window.addEventListener("scroll", onScrollTop, { passive: true });
+
+    return () => {
+      sections.forEach((section) => observer.unobserve(section));
+      window.removeEventListener("scroll", onScrollTop);
+    };
   }, [pathname]);
 
   // Animate the capsule indicator
@@ -84,26 +104,33 @@ export default function Header() {
     return () => document.removeEventListener("pointerdown", handleClickOutside);
   }, [isMenuOpen]);
 
+  // 3. Upgraded Scroll Handler
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     setIsMenuOpen(false);
 
-    // ONLY intercept and smooth scroll if it's a hash link AND we are on the homepage
-    if (href.startsWith("#") && pathname === "/") {
-      e.preventDefault();
-      document.querySelector(href)?.scrollIntoView({ behavior: "smooth" });
+    if (href.includes("#")) {
+      const id = href.split("#")[1];
+      // ONLY intercept and smooth scroll if we are already on the homepage
+      if (pathname === "/") {
+        e.preventDefault();
+        const element = document.getElementById(id);
+        if (element) {
+          // Scroll to the element, subtracting 80px so the sticky header doesn't cover the title
+          const y = element.getBoundingClientRect().top + window.scrollY - 80;
+          window.scrollTo({ top: y, behavior: "smooth" });
+        }
+      }
     }
-    // Otherwise, let Next.js <Link> handle the routing naturally!
   };
 
-  // Helper to format the href: If we are on /menu and click "#about", it needs to go to "/#about"
-  const getHref = (href: string) => {
-    if (href.startsWith("#") && pathname !== "/") return `/${href}`;
-    return href;
-  };
+  // 4. Security/Layout Check: Hide this component completely on Dashboard and Login routes
+  const isHiddenRoute = pathname.startsWith("/dashboard") || pathname.startsWith("/login") || pathname.startsWith("/menu");
+  
+  // Note: We return null AFTER all hooks are called to satisfy React's Rules of Hooks
+  if (isHiddenRoute) return null;
 
   return (
     <>
-      {/* Desktop capsule nav */}
       <nav
         className={`hidden md:flex fixed left-1/2 -translate-x-1/2 z-50 items-center h-[52px] rounded-button px-1.5 border border-border backdrop-blur-md transition-all duration-[250ms] ${
           isScrolled ? "top-4 bg-background/95 shadow-card" : "top-6 bg-background/80"
@@ -123,7 +150,7 @@ export default function Header() {
               ref={(el) => {
                 linksRef.current[i] = el;
               }}
-              href={getHref(link.href)}
+              href={link.href}
               onClick={(e) => handleNavClick(e, link.href)}
               className={`relative z-10 flex items-center h-10 px-4 text-small font-medium tracking-wide uppercase rounded-button transition-colors duration-[150ms] cursor-pointer ${
                 isActive ? "text-accent font-semibold" : "text-text-secondary hover:text-text-primary"
@@ -137,8 +164,8 @@ export default function Header() {
         <div className="w-px h-4 bg-border mx-1" />
 
         <Link
-          href={getHref("#contact")}
-          onClick={(e) => handleNavClick(e, "#contact")}
+          href="/#contact"
+          onClick={() => useCartStore.getState().setIsOpen(true)}
           className="relative z-10 flex items-center h-10 px-5 mr-0.5 rounded-button bg-accent text-white text-small font-semibold uppercase tracking-wide transition-transform duration-[150ms] hover:scale-105"
         >
           Order
@@ -173,7 +200,7 @@ export default function Header() {
               return (
                 <Link
                   key={link.href}
-                  href={getHref(link.href)}
+                  href={link.href}
                   onClick={(e) => handleNavClick(e, link.href)}
                   className={`flex items-center min-h-11 px-4 rounded-button text-small font-medium uppercase tracking-wide transition-colors duration-[150ms] ${
                     isActive ? "bg-accent/10 text-accent font-semibold" : "text-text-secondary"
@@ -185,8 +212,11 @@ export default function Header() {
             })}
 
             <Link
-              href={getHref("#contact")}
-              onClick={(e) => handleNavClick(e, "#contact")}
+              href="/#contact"
+              onClick={() => {
+    setIsMenuOpen(false);
+    useCartStore.getState().setIsOpen(true);
+  }}
               className="flex items-center justify-center min-h-11 mt-1 rounded-button bg-accent text-white text-small font-semibold uppercase tracking-wide"
             >
               Order Now

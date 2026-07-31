@@ -4,7 +4,7 @@ import { FadeUp, StaggerContainer, StaggerItem } from "../ui/FadeUp";
 
 export default function Footer() {
   return (
-    <footer className="border-t border-border bg-background px-6 py-16 lg:px-8">
+    <footer className="border-t border-border bg-background px-6 py-16 lg:px-8" id="contact">
       <StaggerContainer className="mx-auto grid max-w-7xl gap-10 md:grid-cols-3">
 
         {/* Brand */}

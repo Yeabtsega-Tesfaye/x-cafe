@@ -299,7 +299,6 @@ export function MenuPage({ tableNumber, tableId }: MenuPageProps) {
           )}
         </div>
       </section>
-      <FloatingCart tableId={tableId} />
     </div>
   );
 }
