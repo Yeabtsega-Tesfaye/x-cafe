@@ -1,17 +1,19 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 
 const NAV_LINKS = [
-  { href: "#about", label: "About" },
-  { href: "#menu", label: "Menu" },
-  { href: "#services", label: "Services" },
-  { href: "#testimonials", label: "Testimonials" },
-  { href: "#contact", label: "Contact" },
+  { href: "/", label: "Home" },
+  { href: "/menu", label: "Menu" },
+  { href: "/#services", label: "Services" },
+  { href: "/ #contact", label: "Contact" },
 ];
 
 export default function Header() {
+  const pathname = usePathname();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("");
@@ -20,33 +22,46 @@ export default function Header() {
     width?: number;
     opacity?: number;
   }>({});
+  
   const linksRef = useRef<(HTMLAnchorElement | null)[]>([]);
   const mobileNavRef = useRef<HTMLDivElement>(null);
 
+  // Handle scroll styling
   useEffect(() => {
     const onScroll = () => setIsScrolled(window.scrollY > 60);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  // Set active state based on current page or scroll position
   useEffect(() => {
-    const sections = NAV_LINKS.map((link) => document.querySelector(link.href)).filter(
-      (el): el is Element => el !== null
-    );
+    if (pathname === "/menu") {
+      setActiveSection("/menu");
+      return;
+    }
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) setActiveSection(`#${entry.target.id}`);
-        });
-      },
-      { threshold: 0.35 }
-    );
+    // Only run the intersection observer if we are on the homepage
+    if (pathname === "/") {
+      const sections = NAV_LINKS
+        .filter((link) => link.href.startsWith("#")) // Ignore route links like /menu
+        .map((link) => document.querySelector(link.href))
+        .filter((el): el is Element => el !== null);
 
-    sections.forEach((section) => observer.observe(section));
-    return () => sections.forEach((section) => observer.unobserve(section));
-  }, []);
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) setActiveSection(`#${entry.target.id}`);
+          });
+        },
+        { threshold: 0.35 }
+      );
 
+      sections.forEach((section) => observer.observe(section));
+      return () => sections.forEach((section) => observer.unobserve(section));
+    }
+  }, [pathname]);
+
+  // Animate the capsule indicator
   useEffect(() => {
     const idx = NAV_LINKS.findIndex((link) => link.href === activeSection);
     if (idx < 0 || !linksRef.current[idx]) {
@@ -57,6 +72,7 @@ export default function Header() {
     setIndicatorStyle({ opacity: 1, left: el.offsetLeft, width: el.offsetWidth });
   }, [activeSection]);
 
+  // Handle click outside mobile menu
   useEffect(() => {
     if (!isMenuOpen) return;
     const handleClickOutside = (e: PointerEvent) => {
@@ -68,9 +84,21 @@ export default function Header() {
     return () => document.removeEventListener("pointerdown", handleClickOutside);
   }, [isMenuOpen]);
 
-  const handleNavClick = (href: string) => {
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     setIsMenuOpen(false);
-    document.querySelector(href)?.scrollIntoView({ behavior: "smooth" });
+
+    // ONLY intercept and smooth scroll if it's a hash link AND we are on the homepage
+    if (href.startsWith("#") && pathname === "/") {
+      e.preventDefault();
+      document.querySelector(href)?.scrollIntoView({ behavior: "smooth" });
+    }
+    // Otherwise, let Next.js <Link> handle the routing naturally!
+  };
+
+  // Helper to format the href: If we are on /menu and click "#about", it needs to go to "/#about"
+  const getHref = (href: string) => {
+    if (href.startsWith("#") && pathname !== "/") return `/${href}`;
+    return href;
   };
 
   return (
@@ -90,37 +118,31 @@ export default function Header() {
         {NAV_LINKS.map((link, i) => {
           const isActive = activeSection === link.href;
           return (
-            <a
+            <Link
               key={link.href}
               ref={(el) => {
                 linksRef.current[i] = el;
               }}
-              href={link.href}
-              onClick={(e) => {
-                e.preventDefault();
-                handleNavClick(link.href);
-              }}
+              href={getHref(link.href)}
+              onClick={(e) => handleNavClick(e, link.href)}
               className={`relative z-10 flex items-center h-10 px-4 text-small font-medium tracking-wide uppercase rounded-button transition-colors duration-[150ms] cursor-pointer ${
                 isActive ? "text-accent font-semibold" : "text-text-secondary hover:text-text-primary"
               }`}
             >
               {link.label}
-            </a>
+            </Link>
           );
         })}
 
         <div className="w-px h-4 bg-border mx-1" />
 
-        <a
-          href="#contact"
-          onClick={(e) => {
-            e.preventDefault();
-            handleNavClick("#contact");
-          }}
+        <Link
+          href={getHref("#contact")}
+          onClick={(e) => handleNavClick(e, "#contact")}
           className="relative z-10 flex items-center h-10 px-5 mr-0.5 rounded-button bg-accent text-white text-small font-semibold uppercase tracking-wide transition-transform duration-[150ms] hover:scale-105"
         >
           Order
-        </a>
+        </Link>
       </nav>
 
       {/* Mobile nav */}
@@ -149,32 +171,26 @@ export default function Header() {
             {NAV_LINKS.map((link) => {
               const isActive = activeSection === link.href;
               return (
-                <a
+                <Link
                   key={link.href}
-                  href={link.href}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    handleNavClick(link.href);
-                  }}
+                  href={getHref(link.href)}
+                  onClick={(e) => handleNavClick(e, link.href)}
                   className={`flex items-center min-h-11 px-4 rounded-button text-small font-medium uppercase tracking-wide transition-colors duration-[150ms] ${
                     isActive ? "bg-accent/10 text-accent font-semibold" : "text-text-secondary"
                   }`}
                 >
                   {link.label}
-                </a>
+                </Link>
               );
             })}
 
-            <a
-              href="#contact"
-              onClick={(e) => {
-                e.preventDefault();
-                handleNavClick("#contact");
-              }}
+            <Link
+              href={getHref("#contact")}
+              onClick={(e) => handleNavClick(e, "#contact")}
               className="flex items-center justify-center min-h-11 mt-1 rounded-button bg-accent text-white text-small font-semibold uppercase tracking-wide"
             >
               Order Now
-            </a>
+            </Link>
           </div>
         </div>
       </div>

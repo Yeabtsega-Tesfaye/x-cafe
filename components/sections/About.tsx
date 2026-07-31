@@ -3,7 +3,7 @@ import { FadeUp } from "../ui/FadeUp";
 
 export default function About() {
   return (
-    <section className="px-3 py-8 lg:px-4 bg-background">
+    <section className="px-3 py-8 lg:px-4 bg-background" id="about">
       {/* Utilizing your custom content-container class */}
       <div className="content-container grid gap-6 md:grid-cols-2 items-center">
 
