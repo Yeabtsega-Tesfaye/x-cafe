@@ -55,23 +55,22 @@ export default function TrustStrip() {
                 initial={{ opacity: 0, scale: 0.9 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
+                // FIXED: We combined entrance + floating animations into ONE transition object
                 transition={{ 
                   delay: index * 0.08, 
                   duration: 0.4,
                   type: "spring",
                   stiffness: 200,
                   damping: 20,
-                }}
-                animate={{
-                  y: [0, -5, 0, -3, 0],
-                }}
-                transition={{
                   y: {
                     duration: 2.5,
                     repeat: Infinity,
                     ease: "easeInOut",
                     delay: index * 0.15,
                   },
+                }}
+                animate={{
+                  y: [0, -5, 0, -3, 0],
                 }}
                 whileHover={{ 
                   y: -8,
