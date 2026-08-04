@@ -3,14 +3,19 @@ import { PrismaPg } from "@prisma/adapter-pg";
 
 const adapter = new PrismaPg({
   connectionString: process.env.DATABASE_URL!,
-  connectionTimeoutMillis: 15_000,
+  connectionTimeoutMillis: 30_000, 
   max: 10,
 });
 
-// Wraps every single query, on every model, with retry logic for transient
-// connection failures (Neon cold starts, brief network blips). This is what
-// actually fixes "fails once, works on refresh" — it makes the retry happen
-// inside the request itself instead of relying on the user hitting refresh.
+const RETRYABLE_CODES = new Set([
+  "ETIMEDOUT", 
+  "ECONNRESET", 
+  "EAI_AGAIN",
+  "P1001",
+  "P1008",
+  "P2024"
+]);
+
 function withConnectionRetry(client: PrismaClient) {
   return client.$extends({
     query: {
@@ -23,11 +28,8 @@ function withConnectionRetry(client: PrismaClient) {
             try {
               return await query(args);
             } catch (error) {
-              const isTransient =
-                error instanceof Error &&
-                (error.message.includes("ETIMEDOUT") ||
-                  error.message.includes("Connection terminated") ||
-                  error.message.includes("connection"));
+              const code = (error as { code?: string })?.code;
+              const isTransient = code !== undefined && RETRYABLE_CODES.has(code);
 
               if (!isTransient || attempt === maxRetries) {
                 throw error;
@@ -39,8 +41,6 @@ function withConnectionRetry(client: PrismaClient) {
             }
           }
 
-          // Unreachable — the loop above always either returns or throws —
-          // but TypeScript needs an explicit path here.
           throw new Error("Unreachable: retry loop exited without resolution");
         },
       },
