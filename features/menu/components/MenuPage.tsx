@@ -14,7 +14,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { FadeUp, StaggerContainer, StaggerItem } from "@/components/ui/FadeUp";
 import { CATEGORIES, FULL_MENU } from "@/data/menu";
 import { useCartStore } from "@/features/orders/store/useCartStore";
-import { FloatingCart } from "@/features/orders/components/FloatingCart";
 
 type ViewMode = "grid" | "list";
 interface MenuPageProps {

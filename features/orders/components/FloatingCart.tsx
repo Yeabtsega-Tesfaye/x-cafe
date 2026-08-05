@@ -1,24 +1,28 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import { useParams, useRouter } from "next/navigation"; // <-- Import useParams
 import { motion, AnimatePresence } from "framer-motion";
-import { ShoppingBag, X, Plus, Minus, ArrowRight, ArrowLeft, Loader2, UtensilsCrossed, Bike, Store, MapPin } from "lucide-react";
+import { ShoppingBag, X, Plus, Minus, ArrowRight, ArrowLeft, Loader2, UtensilsCrossed, Bike, Store } from "lucide-react";
 import { useCartStore } from "../store/useCartStore";
 import { submitOrder } from "../actions/submit-order";
-import { useRouter } from "next/navigation";
 
-// Must match your Prisma Enum exactly
 type OrderType = "DINE_IN" | "TAKEAWAY" | "DELIVERY";
 
-export function FloatingCart({ tableId }: { tableId?: string }) {
+// No need to pass tableId as a prop anymore!
+export function FloatingCart() {
   const router = useRouter();
-  const [isPending, startTransition] = useTransition();
+  const params = useParams(); 
   
-  // Local UI State
+  // Extract tableId directly from the URL route (assuming your folder is [tableId])
+  const tableId = params?.tableId as string | undefined;
+
+  const [isPending, startTransition] = useTransition();
   const [view, setView] = useState<"cart" | "checkout">("cart");
+  
+  // It will naturally default to DINE_IN if a tableId exists in the URL
   const [orderType, setOrderType] = useState<OrderType>(tableId ? "DINE_IN" : "TAKEAWAY");
   
-  // Form State
   const [formData, setFormData] = useState({ name: "", phone: "", address: "" });
   
   const { items, isOpen, setIsOpen, getTotalItems, getTotalPrice, updateQuantity, clearCart } = useCartStore();
@@ -26,7 +30,6 @@ export function FloatingCart({ tableId }: { tableId?: string }) {
   const totalPrice = getTotalPrice();
 
   const handleFinalSubmit = () => {
-    // Basic Client Validation
     if (orderType === "DELIVERY" && (!formData.address || !formData.phone)) {
       alert("Please fill in your delivery address and phone number.");
       return;
@@ -34,7 +37,7 @@ export function FloatingCart({ tableId }: { tableId?: string }) {
 
     startTransition(async () => {
       const payload = {
-        tableId: tableId, // Undefined if they ordered from the homepage
+        tableId: tableId, 
         type: orderType,
         customerName: formData.name,
         customerPhone: formData.phone,
@@ -49,15 +52,13 @@ export function FloatingCart({ tableId }: { tableId?: string }) {
         clearCart();
         setIsOpen(false);
         setView("cart");
-        // Route to the success page (you can create a generic one if there is no tableId)
-        router.push(tableId ? `/menu/${tableId}/success?orderId=${result.orderId}` : `/success?orderId=${result.orderId}`);
+        router.push(`/success?orderId=${result.orderId}`);
       } else {
         alert(result.error);
       }
     });
   };
 
-  // Hide cart if empty
   if (totalItems === 0 && !isOpen) return null;
 
   return (
@@ -202,7 +203,7 @@ export function FloatingCart({ tableId }: { tableId?: string }) {
                   <div className="space-y-4">
                     <div>
                       <label className="mb-1.5 block text-xs font-bold text-text-secondary">Your Name</label>
-                      <input type="text" value={formData.name} onChange={(e) => setFormData({...formData, name: e.target.value})} placeholder="John Doe" className="w-full rounded-xl border border-border bg-background py-3 px-4 text-sm focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent" />
+                      <input type="text" value={formData.name} onChange={(e) => setFormData({...formData, name: e.target.value})} placeholder="Nati" className="w-full rounded-xl border border-border bg-background py-3 px-4 text-sm focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent" />
                     </div>
 
                     {(orderType === "DELIVERY" || orderType === "TAKEAWAY") && (
@@ -216,7 +217,6 @@ export function FloatingCart({ tableId }: { tableId?: string }) {
                       <div>
                         <label className="mb-1.5 block text-xs font-bold text-text-secondary">Delivery Address <span className="text-red-500">*</span></label>
                         <div className="relative">
-                          <MapPin className="absolute left-3 top-3 h-4 w-4 text-text-secondary" />
                           <textarea value={formData.address} onChange={(e) => setFormData({...formData, address: e.target.value})} placeholder="Bole, Rwanda..." className="w-full resize-none rounded-xl border border-border bg-background py-3 pl-9 pr-4 text-sm focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent" rows={2} />
                         </div>
                       </div>

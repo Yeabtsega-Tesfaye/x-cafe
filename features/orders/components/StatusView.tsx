@@ -51,14 +51,14 @@ export function StatusView({ order }: { order: OrderData }) {
                   <span className="font-medium text-text-primary">
                     {item.quantity}x {item.name}
                   </span>
-                  <span className="text-text-secondary">${(item.price * item.quantity).toFixed(2)}</span>
+                  <span className="text-text-secondary">ETB {(item.price * item.quantity).toFixed(2)}</span>
                 </div>
               ))}
             </div>
 
             <div className="flex justify-between border-t border-border/50 bg-background/50 p-4 font-bold text-text-primary">
               <span>Total</span>
-              <span className="text-accent">${order.total.toFixed(2)}</span>
+              <span className="text-accent">ETB {order.total.toFixed(2)}</span>
             </div>
           </div>
 
