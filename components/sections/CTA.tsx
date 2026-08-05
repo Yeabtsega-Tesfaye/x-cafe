@@ -42,35 +42,6 @@ export default function CTA() {
            </motion.div>
          ))}
        </div>
-
-       {/* Scrolling Food Plates */}
-       <div className="pointer-events-none absolute inset-x-0 top-1/2 z-0 -translate-y-1/2">
-         <div className="w-full overflow-hidden py-4">
-           <motion.div
-             className="flex gap-8 sm:gap-12"
-             animate={{ x: ["0%", "-50%"] }}
-             transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-           >
-             {[...foodItems, ...foodItems, ...foodItems].map((item, idx) => (
-               <div
-                 key={idx}
-                 className="flex h-24 w-24 flex-shrink-0 items-center justify-center overflow-hidden rounded-full border border-border/40 bg-white/50 shadow-md backdrop-blur-sm sm:h-32 sm:w-32"
-               >
-                 <div className="relative h-16 w-16 sm:h-20 sm:w-20">
-                   <Image
-                     src={item.image}
-                     alt={item.name}
-                     fill
-                     className="object-contain"
-                     sizes="128px"
-                   />
-                 </div>
-               </div>
-             ))}
-           </motion.div>
-         </div>
-       </div>
-
        {/* Content */}
        <div className="relative z-10 mx-auto max-w-3xl">
          <FadeUp delay={0.1}>

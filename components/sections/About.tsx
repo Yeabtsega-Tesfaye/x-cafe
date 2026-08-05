@@ -1,7 +1,8 @@
 "use client";
 
+import { useRef } from "react";
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform, MotionValue } from "framer-motion";
 import { Coffee, Leaf, Clock, Home, Award, ArrowRight } from "lucide-react";
 import { FadeUp } from "../ui/FadeUp";
 
@@ -12,7 +13,44 @@ const features = [
   { icon: Award, label: "Expert Baristas", desc: "Passionate about every cup" },
 ];
 
+const ScrollHighlight = ({
+  children,
+  progress,
+  range,
+}: {
+  children: React.ReactNode;
+  progress: MotionValue<number>;
+  range: [number, number];
+}) => {
+  const opacity = useTransform(progress, range, [0, 1]);
+
+  return (
+    // Moved font-bold here so BOTH layers are exactly the same width
+    <span className="relative inline-block whitespace-nowrap font-bold">
+      {/* The base gray text */}
+      <span className="text-text-secondary/60">{children}</span>
+      
+      {/* The colored text that fades in over it */}
+      <motion.span
+        style={{ opacity }}
+        className="absolute left-0 top-0 text-accent drop-shadow-sm"
+        aria-hidden="true" 
+      >
+        {children}
+      </motion.span>
+    </span>
+  );
+};
+
 export default function About() {
+  const textRef = useRef<HTMLDivElement>(null);
+  
+  // Track scroll specifically over the text container
+  const { scrollYProgress } = useScroll({
+    target: textRef,
+    offset: ["start 85%", "center 45%"], // Starts fading in when text is 85% down the screen
+  });
+
   return (
     <section id="about" className="relative overflow-hidden bg-white px-4 py-16 sm:px-6 sm:py-20 lg:px-8 lg:py-24">
       {/* Decorative rings */}
@@ -84,20 +122,44 @@ export default function About() {
 
           {/* Content */}
           <div>
-            <FadeUp delay={0.2}>
-              <p className="text-base leading-relaxed text-text-secondary">
-                At X Cafe, we believe great coffee brings people together. We
-                combine quality ingredients, modern service, and a welcoming
-                atmosphere to create memorable moments every day.
-              </p>
-            </FadeUp>
+            {/* We attach the textRef here to track this specific container */}
+            <div ref={textRef} className="space-y-4">
+              <FadeUp delay={0.2}>
+                <p className="text-base leading-relaxed text-text-secondary/80 sm:text-lg">
+                  At X Cafe, we believe{" "}
+                  <ScrollHighlight progress={scrollYProgress} range={[0, 0.2]}>
+                    great coffee
+                  </ScrollHighlight>{" "}
+                  brings people together. We combine{" "}
+                  <ScrollHighlight progress={scrollYProgress} range={[0.2, 0.4]}>
+                    quality ingredients
+                  </ScrollHighlight>
+                  ,{" "}
+                  <ScrollHighlight progress={scrollYProgress} range={[0.4, 0.6]}>
+                    modern service
+                  </ScrollHighlight>
+                  , and a welcoming atmosphere to create{" "}
+                  <ScrollHighlight progress={scrollYProgress} range={[0.6, 0.8]}>
+                    memorable moments
+                  </ScrollHighlight>{" "}
+                  every day.
+                </p>
+              </FadeUp>
 
-            <FadeUp delay={0.3}>
-              <p className="mt-4 text-base leading-relaxed text-text-secondary">
-                Whether you visit us for a quick coffee, a meeting, or a relaxing
-                meal, we make every experience special.
-              </p>
-            </FadeUp>
+              <FadeUp delay={0.3}>
+                <p className="text-base leading-relaxed text-text-secondary/80 sm:text-lg">
+                  Whether you visit us for a{" "}
+                  <ScrollHighlight progress={scrollYProgress} range={[0.7, 0.9]}>
+                    quick coffee
+                  </ScrollHighlight>
+                  , a meeting, or a{" "}
+                  <ScrollHighlight progress={scrollYProgress} range={[0.8, 1]}>
+                    relaxing meal
+                  </ScrollHighlight>
+                  , we make every experience special.
+                </p>
+              </FadeUp>
+            </div>
 
             <div className="mt-8 grid grid-cols-2 gap-3 sm:gap-4">
               {features.map((feature, i) => (

@@ -6,7 +6,7 @@ import { useState, useEffect } from "react";
 import { ArrowRight, Star, ShoppingBag, Plus, Check, Flame } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FadeUp, StaggerContainer, StaggerItem } from "../ui/FadeUp";
-import { FEATURED_FOOD } from "@/data/menu";
+import { FEATURED_FOOD, FULL_MENU } from "@/data/menu";
 import { useCartStore } from "@/features/orders/store/useCartStore";
 
 interface MenuItem {
@@ -109,7 +109,7 @@ function AddToCartButton({ onAdd }: { onAdd: () => void }) {
           >
             <ShoppingBag className="h-4 w-4" />
             Order
-            <Plus className="h-3.5 w-3.5 transition-transform duration-300 group-hover/btn:rotate-90" />
+            <Plus className="h-5 w-5 transition-transform duration-300 group-hover/btn:rotate-90" />
           </motion.span>
         )}
       </AnimatePresence>
@@ -308,7 +308,7 @@ export default function Menu() {
               <ArrowRight className="relative z-10 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1 sm:h-5 sm:w-5" />
               <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
             </Link>
-            <span className="text-sm text-text-muted">{FEATURED_FOOD.length}+ dishes available</span>
+            <span className="text-sm text-text-muted">{FULL_MENU.length}+ dishes available</span>
           </div>
         </FadeUp>
       </div>

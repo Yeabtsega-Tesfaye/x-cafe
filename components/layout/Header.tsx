@@ -123,12 +123,6 @@ export default function Header() {
     }
   };
 
-  // 4. Security/Layout Check: Hide this component completely on Dashboard and Login routes
-  const isHiddenRoute = pathname.startsWith("/dashboard") || pathname.startsWith("/login") || pathname.startsWith("/menu");
-  
-  // Note: We return null AFTER all hooks are called to satisfy React's Rules of Hooks
-  if (isHiddenRoute) return null;
-
   return (
     <>
       <nav

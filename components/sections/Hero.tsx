@@ -5,6 +5,7 @@ import Image from "next/image";
 import { Coffee, Users, UtensilsCrossed, Star, ArrowRight } from "lucide-react";
 import { motion, useInView } from "framer-motion";
 import TopographicBackground from "../ui/TopographicBackground";
+import { useCartStore } from "@/features/orders/store/useCartStore";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -29,14 +30,15 @@ export default function Hero() {
 
   return (
     <section className="relative h-[150vh] w-full bg-background-secondary">
-      <TopographicBackground />
-
       <div
         ref={triggerRef}
         className="pointer-events-none absolute left-0 top-[100vh] mt-12 h-px w-full"
       />
 
       <div className="sticky top-0 h-screen w-full overflow-hidden">
+        
+        <TopographicBackground />
+
         {/* Ambient Glows */}
         <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
           <div className="absolute -right-[5%] -top-[10%] h-[60vw] w-[60vw] rounded-full bg-accent/15 blur-[120px]" />
@@ -146,13 +148,14 @@ export default function Hero() {
             >
               <a
                 href="#menu"
+                onClick={() => useCartStore.getState().setIsOpen(true)}
                 className="inline-flex h-12 items-center justify-center gap-2 rounded-button bg-accent px-6 text-sm font-bold text-white shadow-lg shadow-accent/30 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-accent/40 active:scale-[0.98] sm:h-14 sm:px-8 sm:text-base"
               >
                 Order Now
                 <ArrowRight className="h-4 w-4" />
               </a>
               <a
-                href="#services"
+                href="#menu"
                 className="inline-flex h-12 items-center justify-center rounded-button border border-border bg-white/90 px-6 text-sm font-bold text-text-primary shadow-sm backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5 hover:bg-white active:scale-[0.98] sm:h-14 sm:px-8 sm:text-base"
               >
                 View Menu

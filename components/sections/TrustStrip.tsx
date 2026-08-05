@@ -22,10 +22,19 @@ export default function TrustStrip() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="flex flex-wrap items-stretch justify-center gap-3 sm:gap-4"
+          // 1. PARENT handles the outer border, the rounding, and the grid
+          className="grid w-full grid-cols-1 overflow-hidden rounded-2xl border border-border/60 bg-background sm:grid-cols-2 lg:grid-cols-4"
         >
           {trustSignals.map((signal, index) => {
             const Icon = signal.icon;
+
+            // 2. dynamically calculate inside borders based on the grid layout
+            let borderClasses = "";
+            if (index === 0) borderClasses = "border-b border-border/40 sm:border-r lg:border-b-0";
+            if (index === 1) borderClasses = "border-b border-border/40 sm:border-r-0 lg:border-r lg:border-b-0";
+            if (index === 2) borderClasses = "border-b border-border/40 sm:border-b-0 sm:border-r lg:border-r lg:border-b-0";
+            if (index === 3) borderClasses = "border-none";
+
             return (
               <motion.div
                 key={index}
@@ -33,8 +42,8 @@ export default function TrustStrip() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.08, duration: 0.4 }}
-                whileHover={{ y: -4, scale: 1.02 }}
-                className="group flex w-full items-center gap-3 rounded-2xl border border-border/40 bg-background-secondary/60 p-3 shadow-sm backdrop-blur-sm transition-all duration-300 hover:border-accent/30 hover:shadow-lg hover:shadow-accent/5 sm:w-auto sm:flex-1 sm:min-w-[180px] sm:max-w-[240px] sm:p-4"
+                // 3. CHILDREN just handle padding and the hover background effect
+                className={`group flex w-full items-center gap-3 bg-transparent p-4 transition-colors duration-300 hover:bg-background-secondary/60 ${borderClasses}`}
               >
                 <motion.div
                   animate={{ y: [0, -4, 0] }}

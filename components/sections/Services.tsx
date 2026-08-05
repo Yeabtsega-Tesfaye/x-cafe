@@ -57,7 +57,7 @@ function ServiceCard({
         sizes="(max-width: 1024px) 100vw, 50vw"
       />
       <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent transition-all duration-500 group-hover:from-black/80" />
-      <div className="absolute bottom-0 left-0 right-0 p-5 text-white transition-transform duration-300 group-hover:-translate-y-1 sm:p-6">
+      <div className="absolute bottom--1 left-0 right-0 p-5 text-white transition-transform duration-300 group-hover:-translate-y-1 sm:p-6">
         <h3 className="text-xl font-bold sm:text-2xl">{title}</h3>
         <p className="mt-1 max-w-md text-sm leading-relaxed text-white/80 sm:text-base">
           {description}

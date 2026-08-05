@@ -40,7 +40,7 @@ export default function Testimonials() {
 
       <div className="relative z-10 mx-auto max-w-7xl">
         {/* Header */}
-        <div className="mb-10 lg:mb-14">
+        <div className="mb-4 lg:mb-8"> {/* Reduced bottom margin here since we added py-8 to the scroll container */}
           <FadeUp>
             <div className="flex items-center gap-4 sm:gap-6">
               <span className="shrink-0 text-xs font-black uppercase tracking-[0.25em] text-accent sm:text-sm">
@@ -59,8 +59,12 @@ export default function Testimonials() {
           </FadeUp>
         </div>
 
-        {/* Horizontal Scroll Cards */}
-        <div className="flex gap-4 overflow-x-auto pb-6 snap-x snap-mandatory [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        {/* 
+          Horizontal Scroll Cards 
+          FIXED: Added `py-8 px-2 -mx-2` to give the hover animation vertical space,
+          and a slight horizontal offset so the shadows don't clip on the left edge.
+        */}
+        <div className="flex gap-4 overflow-x-auto py-8 px-2 -mx-2 snap-x snap-mandatory [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {reviews.map((review, index) => (
             <motion.div
               key={review.name}
@@ -69,7 +73,7 @@ export default function Testimonials() {
               viewport={{ once: true, amount: 0.3 }}
               transition={{ delay: index * 0.1, duration: 0.5, ease: "easeOut" }}
               whileHover={{ y: -8, scale: 1.02 }}
-              className="relative min-w-[260px] max-w-[300px] flex-shrink-0 snap-start rounded-2xl border border-border/60 bg-white p-5 shadow-lg transition-all duration-300 hover:border-accent/30 hover:shadow-2xl hover:shadow-accent/5 sm:p-6"
+              className="relative min-w-[260px] max-w-[300px] flex-shrink-0 snap-start rounded-2xl border border-border/60 bg-white p-5 shadow-lg transition-all duration-300 hover:border-accent/30 hover:shadow-2xl hover:shadow-accent/10 sm:p-6"
             >
               <Quote className="h-6 w-6 text-accent/20" />
 
@@ -83,7 +87,7 @@ export default function Testimonials() {
                   >
                     <Star
                       size={14}
-                      className={i < review.rating ? "fill-accent text-accent" : "text-text-muted/40"}
+                      className={i < review.rating ? "fill-accent text-accent" : "fill-text-secondary/20 text-text-secondary/20"}
                     />
                   </motion.div>
                 ))}
@@ -106,10 +110,13 @@ export default function Testimonials() {
           ))}
         </div>
 
+        {/* 
+          FIXED: Changed text-text-muted to text-text-secondary and boosted font weight
+        */}
         <motion.p
           animate={{ x: [0, 6, 0] }}
           transition={{ duration: 1.5, repeat: Infinity }}
-          className="mt-2 text-center text-xs text-text-muted sm:hidden"
+          className="mt-2 text-center text-xs font-bold text-text-secondary/70 sm:hidden"
         >
           ← Swipe for more →
         </motion.p>
