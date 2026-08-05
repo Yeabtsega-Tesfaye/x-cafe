@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { LayoutDashboard, ChefHat, ClipboardList, UtensilsCrossed, BarChart3, Settings, LogOut, Coffee } from "lucide-react";
-import { authClient } from "@/features/auth/services/auth-client"; // Import better-auth client
+import { authClient } from "@/features/auth/services/auth-client"; 
 
 const links = [
   { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
@@ -18,7 +18,6 @@ export default function Sidebar() {
   const pathname = usePathname();
   const router = useRouter();
   
-  // Fetch real user data from better-auth
   const { data: session } = authClient.useSession();
   const user = session?.user;
 
@@ -28,7 +27,7 @@ export default function Sidebar() {
   };
 
   return (
-    <aside className="sticky top-0 hidden h-screen w-64 flex-col border-r border-border/50 bg-background md:flex">
+    <aside className="sticky top-0 hidden h-[calc(100vh)] w-64 flex-col overflow-hidden rounded-3xl border border-border/50 bg-background shadow-sm md:flex">
       <div className="flex flex-1 flex-col overflow-y-auto">
         {/* Brand */}
         <div className="flex items-center gap-3 border-b border-border/50 p-6">

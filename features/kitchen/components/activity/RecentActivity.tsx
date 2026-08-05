@@ -57,8 +57,8 @@ export default function RecentActivity({ orders }: { orders: KitchenOrder[] }) {
   };
 
   return (
-    <div className="flex h-full flex-col overflow-hidden rounded-3xl border border-border/50 bg-background shadow-sm">
-      <div className="flex items-center justify-between border-b border-border/50 p-6">
+<div className="flex max-h-[calc(100vh-8rem)] flex-col overflow-hidden rounded-3xl border border-border/50 bg-background shadow-sm">
+    <div className="flex items-center justify-between border-b border-border/50 p-6">
         <div>
           <h2 className="font-display text-lg font-bold text-text-primary">Recent Activity</h2>
           <p className="text-sm text-text-secondary">Live kitchen updates</p>

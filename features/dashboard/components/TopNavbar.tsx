@@ -28,7 +28,7 @@ export default function TopNavbar() {
   });
 
   return (
-    <header className="sticky top-0 z-30 flex h-20 items-center justify-between border-b border-border/50 bg-background/80 px-6 backdrop-blur-md">
+    <header className="fixed left-4 right-4 top-4 z-30 flex h-20 items-center justify-between rounded-3xl border border-border/50 bg-background/80 px-6 shadow-sm backdrop-blur-md md:left-[17.5rem]">
       <div>
         <div className="flex items-center gap-2">
           <span className="text-xl">👋</span>

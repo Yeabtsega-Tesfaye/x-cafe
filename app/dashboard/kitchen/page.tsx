@@ -26,17 +26,17 @@ export default async function KitchenDashboardRoute() {
         
         {/* Top Row: Live Stats Calculator */}
         <StatsSection orders={orders} />
-        
-        {/* Bottom Row: Asymmetric Grid Layout */}
-        <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-4">
+
+        <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-3 xl:gap-8">
           
-          {/* Main Board takes up 75% of the screen on desktop */}
-          <div className="lg:col-span-3">
+          {/* Main Board now takes 2/3 of the space (66%) instead of 3/4 */}
+          {/* FIX: Changed from lg:col-span-3 to lg:col-span-2 */}
+          <div className="lg:col-span-2">
             <OrdersBoard initialOrders={orders} />
           </div>
           
-          {/* Activity Feed takes up the remaining 25% sidebar */}
-          <div className="lg:col-span-1">
+          {/* Activity Feed now takes 1/3 of the space (33%) instead of 1/4 */}
+          <div className="self-start sticky top-28 lg:col-span-1">
             <RecentActivity orders={orders} />
           </div>
           
