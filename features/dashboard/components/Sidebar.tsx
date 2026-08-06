@@ -2,17 +2,9 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { LayoutDashboard, ChefHat, ClipboardList, UtensilsCrossed, BarChart3, Settings, LogOut, Coffee } from "lucide-react";
+import { LogOut, Coffee } from "lucide-react";
 import { authClient } from "@/features/auth/services/auth-client"; 
-
-const links = [
-  { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
-  { label: "Kitchen", href: "/dashboard/kitchen", icon: ChefHat },
-  { label: "All Orders", href: "/dashboard/orders", icon: ClipboardList },
-  { label: "Menu Items", href: "/dashboard/menu", icon: UtensilsCrossed },
-  { label: "Reports", href: "/dashboard/reports", icon: BarChart3 },
-  { label: "Settings", href: "/dashboard/settings", icon: Settings },
-];
+import { ALL_NAV_LINKS } from "@/data/dashboard";
 
 export default function Sidebar() {
   const pathname = usePathname();
@@ -21,13 +13,21 @@ export default function Sidebar() {
   const { data: session } = authClient.useSession();
   const user = session?.user;
 
+  // Grab the database role, default safely to "kitchen" if loading
+  const userRole = (user?.role as string)?.toLowerCase() || "kitchen";
+
+  // Dynamically filter links based strictly on the user's database role
+  const authorizedLinks = ALL_NAV_LINKS.filter((link) => 
+    link.roles.includes(userRole)
+  );
+
   const handleLogout = async () => {
     await authClient.signOut();
     router.push("/login");
   };
 
   return (
-    <aside className="sticky top-0 hidden h-[calc(100vh)] w-64 flex-col overflow-hidden rounded-3xl border border-border/50 bg-background shadow-sm md:flex">
+    <aside className="sticky top-4 hidden h-[calc(100vh-2rem)] w-64 flex-col overflow-hidden rounded-3xl border border-border/50 bg-background shadow-sm md:flex">
       <div className="flex flex-1 flex-col overflow-y-auto">
         {/* Brand */}
         <div className="flex items-center gap-3 border-b border-border/50 p-6">
@@ -36,13 +36,13 @@ export default function Sidebar() {
           </div>
           <div>
             <h2 className="font-display text-lg font-bold leading-tight text-text-primary">X Cafe</h2>
-            <p className="text-xs text-text-secondary">Restaurant System</p>
+            <p className="text-xs text-text-secondary capitalize">{userRole} Panel</p>
           </div>
         </div>
 
-        {/* Navigation */}
+        {/* Dynamic Navigation */}
         <nav className="flex-1 space-y-1 p-4">
-          {links.map(({ href, label, icon: Icon }) => {
+          {authorizedLinks.map(({ href, label, icon: Icon }) => {
             const active = href === "/dashboard" ? pathname === href : pathname.startsWith(href);
             return (
               <Link

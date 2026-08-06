@@ -8,9 +8,10 @@ export const dynamic = "force-dynamic"; // Ensures the page never caches stale d
 export default async function KitchenDashboardRoute() {
   // Fetch active orders. Prisma includes `updatedAt` by default on all records!
   const orders = await prisma.order.findMany({
-    where: { 
-      status: { not: "PAID" } 
-    },
+where: {
+  status: { not: "PAID" },
+  paymentStatus: { not: "VERIFICATION_REQUIRED" },
+},
     orderBy: { 
       createdAt: "asc" 
     },

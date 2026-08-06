@@ -1,7 +1,8 @@
 "use server";
 import { prisma } from "@/lib/prisma";
-import { OrderType } from "@prisma/client";
+import { OrderType, PaymentMethod, PaymentStatus } from "@prisma/client";
 import { revalidatePath } from "next/cache";
+import { put } from "@vercel/blob";
 
 type OrderPayload = {
   tableId?: string;
@@ -9,6 +10,8 @@ type OrderPayload = {
   customerName?: string;
   customerPhone?: string;
   deliveryAddress?: string;
+  paymentMethod: PaymentMethod;
+  receiptPhoto?: File | null;
   items: { id: string; name: string; price: number; quantity: number }[];
   total: number;
 };
@@ -31,15 +34,33 @@ export async function submitOrder(data: OrderPayload) {
       return { success: false, error: "A name is required so we can call it out at pickup." };
     }
 
-    // Recompute the total server-side from the submitted items rather than
-    // trusting data.total directly — a client could otherwise send any
-    // total it wants. Note this still trusts each item's *price* as sent
-    // by the client; fully closing that gap means verifying against the
-    // real menu data server-side, which is a separate, larger change.
+    if (data.paymentMethod !== "CASH" && (!data.receiptPhoto)) {
+      return {
+        success: false,
+        error: "A transaction reference and receipt photo are required for digital payments.",
+      };
+    }
+
+    let receiptUrl: string | null = null;
+    if (data.receiptPhoto) {
+      const blob = await put(
+        `receipts/${Date.now()}-${data.receiptPhoto.name}`,
+        data.receiptPhoto,
+        { access: "public" }
+      );
+      receiptUrl = blob.url;
+    }
+
     const computedTotal = data.items.reduce(
       (sum, item) => sum + item.price * item.quantity,
       0
     );
+
+    // Cash needs no digital verification — it's confirmed in person when
+    // money changes hands, so it should never block the kitchen. Digital
+    // payments start held until a cashier actually checks the receipt.
+    const paymentStatus: PaymentStatus =
+      data.paymentMethod === "CASH" ? "PENDING" : "VERIFICATION_REQUIRED";
 
     const order = await prisma.order.create({
       data: {
@@ -48,6 +69,9 @@ export async function submitOrder(data: OrderPayload) {
         customerName: data.customerName || null,
         customerPhone: data.customerPhone || null,
         deliveryAddress: data.deliveryAddress || null,
+        paymentMethod: data.paymentMethod,
+        paymentStatus,
+        receiptUrl,
         total: computedTotal,
         items: {
           create: data.items.map((item) => ({
@@ -60,6 +84,7 @@ export async function submitOrder(data: OrderPayload) {
     });
 
     revalidatePath("/dashboard/kitchen");
+    revalidatePath("/dashboard/payments");
     return { success: true, orderId: order.id };
   } catch (error) {
     console.error("Order Submission Failed:", error);

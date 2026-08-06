@@ -1,11 +1,6 @@
 import { PrismaClient } from "@prisma/client";
+import { Pool } from "pg";
 import { PrismaPg } from "@prisma/adapter-pg";
-
-const adapter = new PrismaPg({
-  connectionString: process.env.DATABASE_URL!,
-  connectionTimeoutMillis: 30_000, 
-  max: 10,
-});
 
 const RETRYABLE_CODES = new Set([
   "ETIMEDOUT", 
@@ -13,7 +8,8 @@ const RETRYABLE_CODES = new Set([
   "EAI_AGAIN",
   "P1001",
   "P1008",
-  "P2024"
+  "P2024",
+  "P1017"
 ]);
 
 function withConnectionRetry(client: PrismaClient) {
@@ -48,9 +44,25 @@ function withConnectionRetry(client: PrismaClient) {
   });
 }
 
+// 1. Tell TypeScript that BOTH prisma and our pg pool will live globally
 const globalForPrisma = globalThis as unknown as {
   prisma: ReturnType<typeof withConnectionRetry>;
+  pool: Pool;
 };
+
+// 2. Only create a new Pool if one doesn't already exist globally!
+const pool = 
+  globalForPrisma.pool || 
+  new Pool({
+    connectionString: process.env.DIRECT_URL!,
+    connectionTimeoutMillis: 30_000, 
+    max: 10,
+  });
+
+// 3. Save the pool to the global scope in development
+if (process.env.NODE_ENV !== "production") globalForPrisma.pool = pool;
+
+const adapter = new PrismaPg(pool);
 
 export const prisma =
   globalForPrisma.prisma || withConnectionRetry(new PrismaClient({ adapter }));

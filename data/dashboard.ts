@@ -1,43 +1,39 @@
-import {
-  LayoutDashboard,
-  ChefHat,
-  ClipboardList,
-  UtensilsCrossed,
-  BarChart3,
+import { 
+  LayoutDashboard, 
+  ChefHat, 
+  ClipboardList, 
+  UtensilsCrossed, 
+  BarChart3, 
   Settings,
+  ShoppingBag,
+  Utensils,
+  CreditCard
 } from "lucide-react";
 
-import { DashboardMenuItem } from "@/types";
+export type NavItem = {
+  label: string;
+  href: string;
+  icon: any;
+  roles: string[];
+};
 
-export const dashboardMenu: DashboardMenuItem[] = [
+export const ALL_NAV_LINKS = [
   {
-    label: "Dashboard",
-    href: "/dashboard",
-    icon: LayoutDashboard,
+    href: "/dashboard/payments",
+    label: "Payments",
+    icon: CreditCard, // or whatever icon you use
+    roles: ["cashier", "manager"],
   },
-  {
-    label: "Current Orders",
+    {
     href: "/dashboard/kitchen",
-    icon: ChefHat,
+    label: "Kitchen Panel",
+    icon: Utensils,
+    roles: ["kitchen", "chef"],
   },
   {
-    label: "All Orders",
     href: "/dashboard/orders",
-    icon: ClipboardList,
-  },
-  {
-    label: "Menu Items",
-    href: "/dashboard/menu",
-    icon: UtensilsCrossed,
-  },
-  {
-    label: "Reports",
-    href: "/dashboard/reports",
-    icon: BarChart3,
-  },
-  {
-    label: "Settings",
-    href: "/dashboard/settings",
-    icon: Settings,
+    label: "Orders",
+    icon: ShoppingBag,
+    roles: ["cashier", "manager", "kitchen", "chef"], // if cashiers need to see orders too
   },
 ];
