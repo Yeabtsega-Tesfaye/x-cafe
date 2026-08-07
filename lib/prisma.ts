@@ -54,7 +54,8 @@ const globalForPrisma = globalThis as unknown as {
 const pool = 
   globalForPrisma.pool || 
   new Pool({
-    connectionString: process.env.DIRECT_URL!,
+    // 👇 Swapped to DATABASE_URL so Neon handles the connection spikes seamlessly
+    connectionString: process.env.DATABASE_URL!,
     connectionTimeoutMillis: 30_000, 
     max: 10,
   });
