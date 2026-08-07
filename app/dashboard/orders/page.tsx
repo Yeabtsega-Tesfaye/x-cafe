@@ -1,17 +1,17 @@
 import { prisma } from "@/lib/prisma";
-import { OrderStatus, OrderType } from "@prisma/client";
+import { $Enums } from "@prisma/client";
 import { RoleGuard } from "@/features/auth/components/RoleGuard";
 import { ClipboardList, Search, Utensils, ShoppingBag, Truck, CheckCircle2, Clock } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
-const ORDER_TYPE_ICONS: Record<OrderType, any> = {
+const ORDER_TYPE_ICONS: Record<$Enums.OrderType, any> = {
   DINE_IN: Utensils,
   TAKEAWAY: ShoppingBag,
   DELIVERY: Truck,
 };
 
-const STATUS_COLORS: Record<OrderStatus, string> = {
+const STATUS_COLORS: Record<$Enums.OrderStatus, string> = {
   PENDING: "bg-red-500/10 text-red-500",
   PREPARING: "bg-amber-500/10 text-amber-500",
   DELIVERED: "bg-green-500/10 text-green-500",
