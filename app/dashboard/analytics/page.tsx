@@ -38,6 +38,7 @@ export default async function AnalyticsRoute() {
     return acc + order.items.reduce((itemSum: number, item: any) => itemSum + item.quantity, 0);
   }, 0);
 
+  
   const formattedRevenue = totalRevenue.toLocaleString(undefined, {
     minimumFractionDigits: 2, maximumFractionDigits: 2,
   });
