@@ -38,7 +38,7 @@ export default async function AnalyticsRoute() {
     return acc + order.items.reduce((itemSum: number, item: any) => itemSum + item.quantity, 0);
   }, 0);
 
-  
+
   const formattedRevenue = totalRevenue.toLocaleString(undefined, {
     minimumFractionDigits: 2, maximumFractionDigits: 2,
   });
@@ -57,8 +57,8 @@ export default async function AnalyticsRoute() {
     dailyDataMap.set(dateString, 0);
   }
 
-  // Populate actual revenue
-  recentOrders.forEach((order) => {
+// Populate actual revenue
+  recentOrders.forEach((order: any) => {
     const dateString = new Date(order.createdAt).toLocaleDateString("en-US", { weekday: 'short', month: 'short', day: 'numeric' });
     if (dailyDataMap.has(dateString)) {
       dailyDataMap.set(dateString, dailyDataMap.get(dateString)! + order.total);
