@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { OrderStatus, OrderType } from "@prisma/client";
+import { RoleGuard } from "@/features/auth/components/RoleGuard";
 import { ClipboardList, Search, Utensils, ShoppingBag, Truck, CheckCircle2, Clock } from "lucide-react";
 
 export const dynamic = "force-dynamic";
@@ -24,6 +25,7 @@ export default async function AllOrdersPage() {
   });
 
   return (
+        <RoleGuard allowedRoles={["admin","manager","chef","kitchen","cashier"]}>
     <div className="min-h-screen bg-background-secondary p-4 md:p-8 pt-28">
       <div className="mx-auto max-w-7xl rounded-3xl border border-border/50 bg-background p-6 shadow-sm">
         
@@ -103,5 +105,6 @@ export default async function AllOrdersPage() {
 
       </div>
     </div>
+    </RoleGuard>
   );
 }

@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import { RoleGuard } from "@/features/auth/components/RoleGuard";
 import OrdersBoard from "@/features/kitchen/components/orders/OrdersBoard";
 import StatsSection from "@/features/kitchen/components/stats/StatsSection";
 import RecentActivity from "@/features/kitchen/components/activity/RecentActivity";
@@ -22,6 +23,7 @@ where: {
   });
 
   return (
+        <RoleGuard allowedRoles={["chef","kitchen"]}>
     <div className="min-h-screen bg-background-secondary p-4 md:p-8">
       <div className="mx-auto max-w-7xl">
         
@@ -44,5 +46,6 @@ where: {
         </div>
       </div>
     </div>
+    </RoleGuard>
   );
 }

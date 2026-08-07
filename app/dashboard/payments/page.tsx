@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import { RoleGuard } from "@/features/auth/components/RoleGuard";
 import CashierBoard from "@/features/cashier/components/CashierBoard";
 
 export const dynamic = "force-dynamic";
@@ -11,5 +12,12 @@ export default async function PaymentVerificationRoute() {
     include: { table: true, items: true },
   });
 
-  return <CashierBoard initialOrders={orders} />;
+  return(
+    <>
+      <RoleGuard allowedRoles={["admin","manager","cashier"]}>
+        <CashierBoard initialOrders={orders} />;
+      </RoleGuard>
+
+    </>
+  )
 }

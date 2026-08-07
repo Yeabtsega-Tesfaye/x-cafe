@@ -2,9 +2,11 @@
 
 import { useEffect, useState } from "react";
 import { Bell } from "lucide-react";
+import { usePathname } from "next/navigation";
 
 export default function TopNavbar() {
   const [now, setNow] = useState(new Date());
+  const pathname = usePathname();
 
   useEffect(() => {
     const timer = setInterval(() => setNow(new Date()), 60000);
@@ -27,6 +29,20 @@ export default function TopNavbar() {
     minute: "2-digit",
   });
 
+  // Dynamically set the subtitle based on the current route
+  let subtitle = "Manage today's café operations.";
+  if (pathname?.includes("/kitchen")) {
+    subtitle = "Manage today's kitchen operations.";
+  } else if (pathname?.includes("/payments")) {
+    subtitle = "Manage payment verifications & revenue.";
+  } else if (pathname?.includes("/orders")) {
+    subtitle = "Overview of all active café orders.";
+  } else if (pathname?.includes("/menu")) {
+    subtitle = "Update and manage the café menu.";
+  } else if (pathname?.includes("/admin")) {
+    subtitle = "Manage system settings and tables.";
+  }
+
   return (
     <header className="fixed left-4 right-4 top-4 z-30 flex h-20 items-center justify-between rounded-3xl border border-border/50 bg-background/80 px-6 shadow-sm backdrop-blur-md md:left-[17.5rem]">
       <div>
@@ -37,7 +53,7 @@ export default function TopNavbar() {
           </h1>
         </div>
         <p className="text-sm text-text-secondary">
-          Manage today&apos;s kitchen operations.
+          {subtitle}
         </p>
       </div>
 

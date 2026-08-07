@@ -1,13 +1,23 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
 import { getSessionCookie } from "better-auth/cookies";
 
-// Renamed from middleware.ts per Next.js 16 (proxy.ts is the new convention;
-// middleware.ts still works today but is deprecated and will be removed).
-// Same optimistic cookie-only check as before — the real, DB-verified check
-// still lives in app/dashboard/layout.tsx.
-export function proxy(request: NextRequest) {
-  const sessionCookie = getSessionCookie(request);
+export async function proxy(request: NextRequest) {
+  const { pathname } = request.nextUrl;
 
+  // Allow public routes
+  if (
+    pathname.startsWith("/login") ||
+    pathname.startsWith("/api/auth") ||
+    pathname.startsWith("/menu") ||
+    pathname.startsWith("/success") ||
+    pathname === "/"
+  ) {
+    return NextResponse.next();
+  }
+
+  // Ensure active session cookie exists
+  const sessionCookie = getSessionCookie(request);
   if (!sessionCookie) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
@@ -16,5 +26,8 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/dashboard/:path*"],
+  matcher: [
+    "/admin/:path*",
+    "/dashboard/:path*",
+  ],
 };
