@@ -28,14 +28,14 @@ export default async function AnalyticsRoute() {
     orderBy: { createdAt: "asc" }
   });
 
-  // 3. Calculate Key Performance Indicators (KPIs)
-  const totalRevenue = recentOrders.reduce((sum, order) => sum + order.total, 0);
+// 3. Calculate Key Performance Indicators (KPIs)
+  const totalRevenue = recentOrders.reduce((sum: number, order: any) => sum + order.total, 0);
   const totalOrders = recentOrders.length;
   const averageTicket = totalOrders > 0 ? totalRevenue / totalOrders : 0;
   
   // Calculate total items sold
-  const itemsSold = recentOrders.reduce((acc, order) => {
-    return acc + order.items.reduce((sum, item) => sum + item.quantity, 0);
+  const itemsSold = recentOrders.reduce((acc: number, order: any) => {
+    return acc + order.items.reduce((itemSum: number, item: any) => itemSum + item.quantity, 0);
   }, 0);
 
   const formattedRevenue = totalRevenue.toLocaleString(undefined, {

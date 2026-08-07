@@ -21,17 +21,17 @@ export type NavItem = {
 export const ALL_NAV_LINKS: NavItem[] = [
   // --- MANAGER & ADMIN ROUTES ---
   {
-  href: "/admin/users",
-  label: "Staff Management",
-  icon: Users,
-  roles: ["admin"], // ONLY the admin should see this!
-},
-  {
     href: "/dashboard", // The main landing page for managers
     label: "Overview",
     icon: LayoutDashboard,
     roles: ["manager", "admin"],
   },
+    {
+  href: "/admin/users",
+  label: "Staff Management",
+  icon: Users,
+  roles: ["admin"], // ONLY the admin should see this!
+},
   {
     href: "/dashboard/analytics",
     label: "Analytics & Reports",
