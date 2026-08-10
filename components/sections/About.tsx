@@ -120,72 +120,59 @@ export default function About() {
             </motion.div>
           </motion.div>
 
-          {/* Content */}
-          <div>
-            {/* We attach the textRef here to track this specific container */}
-            <div ref={textRef} className="space-y-4">
-              <FadeUp delay={0.2}>
-                <p className="text-base leading-relaxed text-text-secondary/80 sm:text-lg">
-                  At X Cafe, we believe{" "}
-                  <ScrollHighlight progress={scrollYProgress} range={[0, 0.2]}>
-                    great coffee
-                  </ScrollHighlight>{" "}
-                  brings people together. We combine{" "}
-                  <ScrollHighlight progress={scrollYProgress} range={[0.2, 0.4]}>
-                    quality ingredients
-                  </ScrollHighlight>
-                  ,{" "}
-                  <ScrollHighlight progress={scrollYProgress} range={[0.4, 0.6]}>
-                    modern service
-                  </ScrollHighlight>
-                  , and a welcoming atmosphere to create{" "}
-                  <ScrollHighlight progress={scrollYProgress} range={[0.6, 0.8]}>
-                    memorable moments
-                  </ScrollHighlight>{" "}
-                  every day.
-                </p>
-              </FadeUp>
+{/* Content */}
+<div>
+  <div ref={textRef} className="space-y-4">
+    <FadeUp delay={0.2}>
+      <p className="text-base leading-relaxed text-text-secondary/80 sm:text-lg">
+        At X Cafe, we believe a cup of{" "}
+        <ScrollHighlight progress={scrollYProgress} range={[0, 0.15]}>
+          great coffee
+        </ScrollHighlight>{" "}
+        is the perfect way to start your day. We carefully source the best{" "}
+        <ScrollHighlight progress={scrollYProgress} range={[0.15, 0.3]}>
+          quality ingredients
+        </ScrollHighlight>{" "}
+        from local farmers who care about their craft just as much as we do.
+      </p>
+    </FadeUp>
 
-              <FadeUp delay={0.3}>
-                <p className="text-base leading-relaxed text-text-secondary/80 sm:text-lg">
-                  Whether you visit us for a{" "}
-                  <ScrollHighlight progress={scrollYProgress} range={[0.7, 0.9]}>
-                    quick coffee
-                  </ScrollHighlight>
-                  , a meeting, or a{" "}
-                  <ScrollHighlight progress={scrollYProgress} range={[0.8, 1]}>
-                    relaxing meal
-                  </ScrollHighlight>
-                  , we make every experience special.
-                </p>
-              </FadeUp>
-            </div>
+    <FadeUp delay={0.3}>
+      <p className="text-base leading-relaxed text-text-secondary/80 sm:text-lg">
+        When you walk through our doors, you will find a warm, inviting space designed just for you. Paired with our friendly,{" "}
+        <ScrollHighlight progress={scrollYProgress} range={[0.3, 0.5]}>
+          modern service
+        </ScrollHighlight>
+        , it is easy to unwind, connect, and create{" "}
+        <ScrollHighlight progress={scrollYProgress} range={[0.5, 0.7]}>
+          memorable moments
+        </ScrollHighlight>{" "}
+        every single day.
+      </p>
+    </FadeUp>
 
-            <div className="mt-8 grid grid-cols-2 gap-3 sm:gap-4">
-              {features.map((feature, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.2 + i * 0.08, duration: 0.4 }}
-                  whileHover={{ y: -3, scale: 1.02 }}
-                  className="group rounded-xl border border-border/50 bg-background-secondary/60 p-4 shadow-sm transition-all duration-300 hover:border-accent/30 hover:shadow-md"
-                >
-                  <feature.icon className="h-5 w-5 text-accent transition-transform duration-300 group-hover:scale-110" />
-                  <p className="mt-2 text-sm font-bold text-text-primary">{feature.label}</p>
-                  <p className="mt-0.5 text-xs text-text-secondary">{feature.desc}</p>
-                </motion.div>
-              ))}
-            </div>
+    <FadeUp delay={0.4}>
+      <p className="text-base leading-relaxed text-text-secondary/80 sm:text-lg">
+        Whether you are grabbing a{" "}
+        <ScrollHighlight progress={scrollYProgress} range={[0.7, 0.85]}>
+          quick coffee
+        </ScrollHighlight>{" "}
+        on your way to work, hosting a casual meeting, or sitting down for a{" "}
+        <ScrollHighlight progress={scrollYProgress} range={[0.85, 1]}>
+          relaxing meal
+        </ScrollHighlight>
+        , we are here to make your experience truly special from the first sip to the last bite.
+      </p>
+    </FadeUp>
+  </div>
 
-            <FadeUp delay={0.5}>
-              <button className="group mt-8 inline-flex h-12 items-center gap-2 rounded-button bg-accent px-6 text-sm font-bold text-white shadow-lg shadow-accent/25 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl active:scale-[0.98]">
-                Our Story
-                <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
-              </button>
-            </FadeUp>
-          </div>
+  <FadeUp delay={0.5}>
+    <button className="group mt-8 inline-flex h-12 items-center gap-2 rounded-button bg-accent px-6 text-sm font-bold text-white shadow-lg shadow-accent/25 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl active:scale-[0.98]">
+      Our Story
+      <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+    </button>
+  </FadeUp>
+</div>
         </div>
       </div>
     </section>

@@ -23,7 +23,7 @@ where: {
   });
 
   return (
-        <RoleGuard allowedRoles={["chef","kitchen"]}>
+        <RoleGuard allowedRoles={["chef","kitchen","admin"]}>
     <div className="min-h-screen bg-background-secondary p-4 md:p-8">
       <div className="mx-auto max-w-7xl">
         

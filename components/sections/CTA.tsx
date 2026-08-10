@@ -3,6 +3,7 @@
 import { ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
 import Image from "next/image";
+import Link from "next/link";
 import { FadeUp } from "../ui/FadeUp";
 
 const foodItems = [
@@ -61,14 +62,16 @@ export default function CTA() {
          </FadeUp>
 
          <FadeUp delay={0.3}>
-           <motion.button
-             whileHover={{ scale: 1.03, y: -2 }}
-             whileTap={{ scale: 0.97 }}
-             className="group mt-10 inline-flex h-14 items-center gap-3 rounded-button bg-accent px-8 text-base font-bold text-white shadow-xl shadow-accent/30 transition-all duration-300 hover:shadow-2xl hover:shadow-accent/40 sm:h-16 sm:px-10 sm:text-lg"
-           >
-             Start Your Order
-             <ArrowRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
-           </motion.button>
+<Link href="/menu">
+  <motion.button
+    whileHover={{ scale: 1.03, y: -2 }}
+    whileTap={{ scale: 0.97 }}
+    className="group mt-10 inline-flex h-14 items-center gap-3 rounded-button bg-accent px-8 text-base font-bold text-white shadow-xl shadow-accent/30 transition-all duration-300 hover:shadow-2xl hover:shadow-accent/40 sm:h-16 sm:px-10 sm:text-lg"
+  >
+    Start Your Order
+    <ArrowRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
+  </motion.button>
+</Link>
          </FadeUp>
        </div>
      </div>

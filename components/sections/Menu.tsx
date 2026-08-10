@@ -299,7 +299,7 @@ export default function Menu() {
 
         {/* CTA */}
         <FadeUp delay={0.3}>
-          <div className="mt-12 flex flex-col items-center justify-center gap-4 sm:mt-16 sm:flex-row">
+          <div className="mt-12 flex flex-col items-center justify-start gap-4 sm:mt-16 sm:flex-row">
             <Link
               href="/menu"
               className="group relative inline-flex items-center gap-2 overflow-hidden rounded-button bg-accent px-8 py-3.5 text-sm font-bold text-white shadow-lg shadow-accent/20 transition-all duration-300 hover:shadow-xl hover:shadow-accent/30 active:scale-[0.97] sm:px-10 sm:py-4 sm:text-base"

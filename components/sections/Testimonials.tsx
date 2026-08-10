@@ -40,7 +40,7 @@ export default function Testimonials() {
 
       <div className="relative z-10 mx-auto max-w-7xl">
         {/* Header */}
-        <div className="mb-4 lg:mb-8"> {/* Reduced bottom margin here since we added py-8 to the scroll container */}
+        <div className="mb-4 lg:mb-8">
           <FadeUp>
             <div className="flex items-center gap-4 sm:gap-6">
               <span className="shrink-0 text-xs font-black uppercase tracking-[0.25em] text-accent sm:text-sm">
@@ -59,11 +59,7 @@ export default function Testimonials() {
           </FadeUp>
         </div>
 
-        {/* 
-          Horizontal Scroll Cards 
-          FIXED: Added `py-8 px-2 -mx-2` to give the hover animation vertical space,
-          and a slight horizontal offset so the shadows don't clip on the left edge.
-        */}
+        {/* Horizontal Scroll Cards */}
         <div className="flex gap-4 overflow-x-auto py-8 px-2 -mx-2 snap-x snap-mandatory [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {reviews.map((review, index) => (
             <motion.div
@@ -82,7 +78,8 @@ export default function Testimonials() {
                   <motion.div
                     key={i}
                     initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
+                    whileInView={{ scale: 1 }} // Changed from animate to whileInView
+                    viewport={{ once: true }}  // Added to ensure it only happens once
                     transition={{ delay: 0.3 + index * 0.1 + i * 0.05 }}
                   >
                     <Star
@@ -110,9 +107,6 @@ export default function Testimonials() {
           ))}
         </div>
 
-        {/* 
-          FIXED: Changed text-text-muted to text-text-secondary and boosted font weight
-        */}
         <motion.p
           animate={{ x: [0, 6, 0] }}
           transition={{ duration: 1.5, repeat: Infinity }}
