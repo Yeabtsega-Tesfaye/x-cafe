@@ -46,7 +46,7 @@ export default function Hero() {
         </div>
 
         {/* Floating Food Icons */}
-        <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
+        <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden hidden sm:block">
           <motion.div
             animate={{ y: [0, -15, 0], rotate: [0, 5, 0] }}
             transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
@@ -79,8 +79,11 @@ export default function Hero() {
 
         {/* Glow Behind Burger */}
         <div className="pointer-events-none absolute inset-0 z-0 flex items-center justify-center">
-          <div className="h-[50vw] w-[50vw] rounded-full bg-accent/15 blur-[120px]" />
+          <div className="h-[70vw] w-[70vw] sm:h-[50vw] sm:w-[50vw] rounded-full bg-accent/15 blur-[100px] sm:blur-[120px]" />
         </div>
+
+        {/* Mobile Text Protection Gradient */}
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 h-3/5 bg-gradient-to-t from-background-secondary via-background-secondary/90 to-transparent lg:hidden" />
 
         {/* Burger Image */}
         <motion.div
@@ -91,22 +94,22 @@ export default function Hero() {
             scale: { duration: 1 },
             y: { duration: 3, repeat: Infinity, ease: "easeInOut" },
           }}
-          className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center"
+          className="pointer-events-none absolute inset-0 z-10 flex items-start justify-center pt-[15vh] lg:items-center lg:pt-0"
         >
-          <div className="relative h-[75vh] w-full max-w-5xl drop-shadow-2xl">
+          <div className="relative h-[45vh] w-[90vw] lg:h-[75vh] lg:w-full lg:max-w-5xl drop-shadow-2xl">
             <Image
               src="/images/hero.png"
               alt="Signature Cafe Burger"
               fill
               className="object-contain"
               priority
-              sizes="(max-width: 1280px) 100vw, 1280px"
+              sizes="(max-width: 1024px) 90vw, 1280px"
             />
           </div>
         </motion.div>
 
         {/* Text Content */}
-        <div className="absolute inset-0 z-30 flex flex-col justify-end pb-12 pl-6 sm:pb-20 sm:pl-16 lg:pb-24 lg:pl-32 xl:pl-48">
+        <div className="absolute inset-0 z-30 flex flex-col justify-end pb-10 px-5 sm:pb-20 sm:px-16 lg:pb-24 lg:px-32 xl:px-48">
           <motion.div
             variants={containerVariants}
             initial="hidden"
@@ -131,12 +134,12 @@ export default function Hero() {
               Fresh Food.
               <br className="hidden sm:block" /> Great Coffee.
               <br className="hidden sm:block" />
-              <span className="text-gradient">Effortless.</span>
+              <span className="text-gradient lg:mt-2 lg:inline-block">Effortless.</span>
             </motion.h1>
 
             <motion.p
               variants={itemVariants}
-              className="mt-6 max-w-sm text-base leading-relaxed text-text-secondary sm:max-w-md sm:text-lg"
+              className="mt-4 max-w-sm text-sm leading-relaxed text-text-secondary sm:mt-6 sm:max-w-md sm:text-lg"
             >
               Enjoy handcrafted meals, freshly brewed coffee, and a seamless
               dining experience — all from one modern café.
@@ -144,19 +147,19 @@ export default function Hero() {
 
             <motion.div
               variants={itemVariants}
-              className="mt-8 flex flex-col gap-3 sm:flex-row"
+              className="mt-6 flex flex-col gap-3 sm:mt-8 sm:flex-row"
             >
               <a
                 href="#menu"
                 onClick={() => useCartStore.getState().setIsOpen(true)}
-                className="inline-flex h-12 items-center justify-center gap-2 rounded-button bg-accent px-6 text-sm font-bold text-white shadow-lg shadow-accent/30 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-accent/40 active:scale-[0.98] sm:h-14 sm:px-8 sm:text-base"
+                className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-button bg-accent px-6 text-sm font-bold text-white shadow-lg shadow-accent/30 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-accent/40 active:scale-[0.98] sm:w-auto sm:h-14 sm:px-8 sm:text-base"
               >
                 Order Now
                 <ArrowRight className="h-4 w-4" />
               </a>
               <a
                 href="#menu"
-                className="inline-flex h-12 items-center justify-center rounded-button border border-border bg-white/90 px-6 text-sm font-bold text-text-primary shadow-sm backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5 hover:bg-white active:scale-[0.98] sm:h-14 sm:px-8 sm:text-base"
+                className="inline-flex h-12 w-full items-center justify-center rounded-button border border-border bg-white/90 px-6 text-sm font-bold text-text-primary shadow-sm backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5 hover:bg-white active:scale-[0.98] sm:w-auto sm:h-14 sm:px-8 sm:text-base"
               >
                 View Menu
               </a>
@@ -165,7 +168,7 @@ export default function Hero() {
             {/* Stats */}
             <motion.div
               variants={itemVariants}
-              className="mt-10 flex flex-wrap items-center gap-6 sm:gap-10"
+              className="mt-8 grid grid-cols-3 gap-3 sm:mt-10 sm:flex sm:flex-wrap sm:items-center sm:gap-10"
             >
               {[
                 { icon: Users, value: "500+", label: "Customers" },
@@ -174,19 +177,19 @@ export default function Hero() {
               ].map((stat, i) => (
                 <motion.div
                   key={i}
-                  whileHover={{ scale: 1.1 }}
-                  className="flex items-center gap-3"
+                  whileHover={{ scale: 1.05 }}
+                  className="flex flex-col items-center text-center gap-2 sm:flex-row sm:text-left sm:gap-3"
                 >
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white shadow-md">
+                  <div className="flex h-8 w-8 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-full bg-white shadow-md">
                     <stat.icon
-                      className={`h-5 w-5 ${stat.fill ? "fill-accent text-accent" : "text-accent"}`}
+                      className={`h-4 w-4 sm:h-5 sm:w-5 ${stat.fill ? "fill-accent text-accent" : "text-accent"}`}
                     />
                   </div>
                   <div>
-                    <p className="text-xl font-black tracking-tight text-text-primary">
+                    <p className="text-lg sm:text-xl font-black tracking-tight text-text-primary">
                       {stat.value}
                     </p>
-                    <p className="text-[10px] font-bold uppercase tracking-wider text-text-secondary sm:text-xs">
+                    <p className="text-[9px] font-bold uppercase tracking-wider text-text-secondary sm:text-xs">
                       {stat.label}
                     </p>
                   </div>

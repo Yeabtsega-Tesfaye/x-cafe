@@ -1,12 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Bell } from "lucide-react";
 import { usePathname } from "next/navigation";
+import { useSidebarStore } from "@/store/useSidebarStore"; 
 
 export default function TopNavbar() {
   const [now, setNow] = useState(new Date());
   const pathname = usePathname();
+  const { isCollapsed } = useSidebarStore(); // Hook into the shared state
 
   useEffect(() => {
     const timer = setInterval(() => setNow(new Date()), 60000);
@@ -29,7 +30,6 @@ export default function TopNavbar() {
     minute: "2-digit",
   });
 
-  // Dynamically set the subtitle based on the current route
   let subtitle = "Manage today's café operations.";
   if (pathname?.includes("/kitchen")) {
     subtitle = "Manage today's kitchen operations.";
@@ -44,7 +44,11 @@ export default function TopNavbar() {
   }
 
   return (
-    <header className="fixed left-4 right-4 top-4 z-30 flex h-20 items-center justify-between rounded-3xl border border-border/50 bg-background/80 px-6 shadow-sm backdrop-blur-md md:left-[17.5rem]">
+    <header 
+      className={`fixed right-4 top-4 z-30 flex h-20 items-center justify-between rounded-3xl border border-border/50 bg-background/80 px-6 shadow-sm backdrop-blur-md transition-all duration-300 ease-in-out left-4 ${
+        isCollapsed ? "md:left-[7.5rem]" : "md:left-[17.5rem]"
+      }`}
+    >
       <div>
         <div className="flex items-center gap-2">
           <span className="text-xl">👋</span>
@@ -62,11 +66,6 @@ export default function TopNavbar() {
           <p className="text-sm font-medium text-text-primary">{date}</p>
           <p className="text-xs font-bold text-text-secondary">{time}</p>
         </div>
-
-        <button className="relative rounded-full border border-border/50 bg-background-secondary p-2.5 text-text-secondary transition-colors hover:bg-background hover:text-text-primary">
-          <Bell size={20} />
-          <span className="absolute right-2 top-2 h-2 w-2 rounded-full bg-red-500 ring-2 ring-background"></span>
-        </button>
       </div>
     </header>
   );

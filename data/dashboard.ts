@@ -4,7 +4,7 @@ import {
   ClipboardList, 
   UtensilsCrossed, 
   BarChart3, 
-  Settings,
+  Table,
   ShoppingBag,
   Utensils,
   CreditCard,
@@ -27,27 +27,27 @@ export const ALL_NAV_LINKS: NavItem[] = [
     roles: ["manager", "admin"],
   },
     {
-  href: "/admin/users",
-  label: "Staff Management",
+  href: "/dashboard/admin/users",
+  label: "Staff ",
   icon: Users,
   roles: ["admin"], // ONLY the admin should see this!
 },
   {
     href: "/dashboard/analytics",
-    label: "Analytics & Reports",
+    label: "Reports",
     icon: BarChart3,
     roles: ["manager", "admin"],
   },
   {
     href: "/dashboard/menu",
-    label: "Menu Management",
+    label: "Menu",
     icon: ClipboardList,
     roles: ["manager", "admin"],
   },
   {
-    href: "/admin/tables",
-    label: "Tables & Settings",
-    icon: Settings,
+    href: "/dashboard/admin/tables",
+    label: "Tables",
+    icon: Table,
     roles: ["manager", "admin"],
   },
 
@@ -60,7 +60,7 @@ export const ALL_NAV_LINKS: NavItem[] = [
   },
   {
     href: "/dashboard/kitchen",
-    label: "Kitchen Panel",
+    label: "Kitchen",
     icon: ChefHat,
     roles: ["kitchen", "chef", "manager", "admin"], 
   },

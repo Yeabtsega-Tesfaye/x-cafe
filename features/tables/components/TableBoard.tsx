@@ -61,13 +61,13 @@ export default function TableBoard({ initialTables }: { initialTables: Table[] }
           <p className="text-sm text-text-secondary">Add your first table to generate a QR code.</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {initialTables.map((table) => (
             <div 
               key={table.id} 
-              className="flex flex-col overflow-hidden rounded-2xl border border-border bg-background p-4 shadow-sm transition-all hover:border-border/80 hover:shadow-md"
+              className="flex flex-col overflow-hidden rounded-2xl border border-border bg-background p-2 shadow-sm transition-all hover:border-border/80 hover:shadow-md"
             >
-              <div className="mb-4 flex items-center justify-between border-b border-border/50 pb-4">
+              <div className="mb-4 flex items-center justify-between border-b border-border/50">
                 <h3 className="font-display text-lg font-bold text-text-primary">
                   Table {table.number}
                 </h3>
@@ -81,7 +81,7 @@ export default function TableBoard({ initialTables }: { initialTables: Table[] }
               </div>
               
               {/* This is where your existing QR code component goes! */}
-              <div className="flex-1 flex items-center justify-center bg-white rounded-xl p-4 border border-border/50">
+              <div className="flex-1 flex items-center justify-center bg-white rounded-xl border border-border/50">
                 <TableQRCode tableId={table.id} tableNumber={table.number} />
               </div>
             </div>
