@@ -3,7 +3,6 @@
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 
-// Changed isApproved to a string to match your frontend binding!
 export async function verifyPayment(orderId: string, actionType: string) {
   try {
     const isApproved = actionType === "PAID";
@@ -12,8 +11,9 @@ export async function verifyPayment(orderId: string, actionType: string) {
       where: { id: orderId },
       data: {
         paymentStatus: isApproved ? "PAID" : "REJECTED",
-        // If approved, send to kitchen. If rejected, cancel the order completely!
-        status: isApproved ? "PENDING" : "CANCELLED", 
+        // If approved, send to kitchen queue (PENDING).
+        // If rejected, pass undefined so Prisma leaves the status exactly as it is!
+        status: isApproved ? "PENDING" : undefined, 
       },
     });
 

@@ -46,7 +46,8 @@ export default function AnalyticsCharts({ data }: { data: DailyRevenue[] }) {
               backgroundColor: "rgba(255, 255, 255, 0.95)"
             }}
             itemStyle={{ color: "#111827", fontWeight: "bold" }}
-            formatter={(value: number) => [`ETB ${value.toFixed(2)}`, "Revenue"]}
+            // Fix: Tell TS to accept whatever Recharts sends, then ensure it's a Number
+            formatter={(value: any) => [`ETB ${Number(value || 0).toFixed(2)}`, "Revenue"]}
             labelStyle={{ color: "#6b7280", marginBottom: "4px" }}
           />
           

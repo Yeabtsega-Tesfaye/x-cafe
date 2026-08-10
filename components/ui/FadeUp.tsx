@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 import { ReactNode } from "react";
 
 // ==========================================
@@ -35,7 +35,7 @@ export function FadeUp({ children, className = "", delay = 0 }: FadeUpProps) {
 // ==========================================
 // 2. STAGGERED FADE UP (For lists/groups of elements)
 // ==========================================
-const staggerContainerVariants = {
+const staggerContainerVariants: Variants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
@@ -46,7 +46,7 @@ const staggerContainerVariants = {
   },
 };
 
-const staggerItemVariants = {
+const staggerItemVariants: Variants = {
   hidden: { opacity: 0, y: 40, scale: 0.95 },
   visible: {
     opacity: 1,

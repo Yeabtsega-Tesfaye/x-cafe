@@ -22,7 +22,6 @@ export default function HourlySalesChart({ data }: { data: ChartData[] }) {
         <AreaChart data={data} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
           <defs>
             <linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
-              {/* Using a nice green theme for revenue */}
               <stop offset="5%" stopColor="#10b981" stopOpacity={0.3} />
               <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
             </linearGradient>
@@ -42,7 +41,8 @@ export default function HourlySalesChart({ data }: { data: ChartData[] }) {
             axisLine={false} 
             tickLine={false} 
             tick={{ fontSize: 12, fill: "#6b7280" }} 
-            tickFormatter={(value) => `ETB ${value}`} 
+            // Fix: Format the Y-Axis to display "1k" instead of "1000"
+            tickFormatter={(value) => value >= 1000 ? `ETB ${value / 1000}k` : `ETB ${value}`} 
           />
           
           <Tooltip
@@ -53,7 +53,7 @@ export default function HourlySalesChart({ data }: { data: ChartData[] }) {
               backgroundColor: "rgba(255, 255, 255, 0.95)"
             }}
             itemStyle={{ color: "#111827", fontWeight: "bold" }}
-            formatter={(value: number) => [`ETB ${value.toFixed(2)}`, "Revenue"]}
+            formatter={(value: any) => [`ETB ${Number(value || 0).toFixed(2)}`, "Revenue"]}
             labelStyle={{ color: "#6b7280", marginBottom: "4px" }}
           />
           

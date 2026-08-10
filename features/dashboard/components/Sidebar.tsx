@@ -13,8 +13,8 @@ export default function Sidebar() {
   const { data: session } = authClient.useSession();
   const user = session?.user;
 
-  // Grab the database role, default safely to "kitchen" if loading
-  const userRole = (user?.role as string)?.toLowerCase() || "kitchen";
+  // Fix: Cast user to 'any' to bypass Better Auth's default strict types
+  const userRole = ((user as any)?.role as string)?.toLowerCase() || "kitchen";
 
   // Dynamically filter links based strictly on the user's database role
   const authorizedLinks = ALL_NAV_LINKS.filter((link) => 

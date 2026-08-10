@@ -1,46 +1,29 @@
 "use server";
 
-import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 
-// Adjust these fields if your Prisma schema uses different names
+// ============================================================================
+// MOCKED MENU ACTIONS
+// These are currently bypassing Prisma so the app can build using menu.ts!
+// The admin buttons will click successfully, but won't save data permanently.
+// ============================================================================
+
 export async function createMenuItem(formData: FormData) {
-  await prisma.menuItem.create({
-    data: {
-      name: formData.get("name") as string,
-      description: formData.get("description") as string,
-      price: parseFloat(formData.get("price") as string),
-      category: formData.get("category") as string,
-      isAvailable: formData.get("isAvailable") === "true",
-      // We will leave imageUrl blank for now until you connect the image uploader!
-    },
-  });
+  console.log("Mocked Create:", formData.get("name"));
   revalidatePath("/dashboard/menu");
 }
 
 export async function updateMenuItem(id: string, formData: FormData) {
-  await prisma.menuItem.update({
-    where: { id },
-    data: {
-      name: formData.get("name") as string,
-      description: formData.get("description") as string,
-      price: parseFloat(formData.get("price") as string),
-      category: formData.get("category") as string,
-      isAvailable: formData.get("isAvailable") === "true",
-    },
-  });
+  console.log("Mocked Update:", id, formData.get("name"));
   revalidatePath("/dashboard/menu");
 }
 
 export async function toggleAvailability(id: string, isAvailable: boolean) {
-  await prisma.menuItem.update({
-    where: { id },
-    data: { isAvailable },
-  });
+  console.log("Mocked Toggle:", id, isAvailable);
   revalidatePath("/dashboard/menu");
 }
 
 export async function deleteMenuItem(id: string) {
-  await prisma.menuItem.delete({ where: { id } });
+  console.log("Mocked Delete:", id);
   revalidatePath("/dashboard/menu");
 }

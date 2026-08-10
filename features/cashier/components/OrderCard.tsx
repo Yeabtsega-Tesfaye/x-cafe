@@ -1,7 +1,6 @@
 import { verifyPayment } from "@/features/kitchen/actions/verify-payment";
 import { ReceiptImage } from "@/components/ui/ReceiptImage";
 
-// Update these types to match your Prisma schema if needed
 type CashierOrder = {
   id: string;
   paymentStatus: string;
@@ -46,7 +45,11 @@ export default function CashierOrderCard({ order }: { order: CashierOrder }) {
         <div className="mt-5">
           {isPending ? (
             <div className="flex gap-2">
-              <form action={verifyPayment.bind(null, order.id, "PAID")} className="flex-1">
+              {/* Fix: Typecast the bound server action so TS knows it's safe for forms */}
+              <form 
+                action={verifyPayment.bind(null, order.id, "PAID") as (payload: FormData) => void} 
+                className="flex-1"
+              >
                 <button
                   type="submit"
                   className="w-full rounded-xl bg-accent px-4 py-2.5 text-sm font-bold text-white transition-all hover:scale-[1.02] hover:brightness-110 active:scale-95"
@@ -54,7 +57,10 @@ export default function CashierOrderCard({ order }: { order: CashierOrder }) {
                   Confirm
                 </button>
               </form>
-              <form action={verifyPayment.bind(null, order.id, "REJECTED")} className="flex-1">
+              <form 
+                action={verifyPayment.bind(null, order.id, "REJECTED") as (payload: FormData) => void} 
+                className="flex-1"
+              >
                 <button
                   type="submit"
                   className="w-full rounded-xl border border-border bg-background px-4 py-2.5 text-sm font-bold text-text-secondary transition-all hover:bg-background-secondary active:scale-95"
