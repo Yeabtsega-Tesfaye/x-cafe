@@ -24,6 +24,7 @@ model Order {
   customerName    String?
   customerPhone   String?
   deliveryAddress String?
+  note            String?
   status          OrderStatus   @default(PENDING)
   total           Float
   items           OrderItem[]

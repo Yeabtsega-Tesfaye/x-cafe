@@ -1,13 +1,33 @@
 "use client";
+
 import { useEffect, useState, useTransition } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { ShoppingBag, X, Plus, Minus, ArrowRight, ArrowLeft, Loader2, UtensilsCrossed, Bike, Store, CreditCard, Camera } from "lucide-react";
+import { 
+  ShoppingBag, 
+  X, 
+  Plus, 
+  Minus, 
+  ArrowRight, 
+  ArrowLeft, 
+  Loader2, 
+  UtensilsCrossed, 
+  Bike, 
+  Store, 
+  CreditCard, 
+  Camera,
+  Copy,
+  Check
+} from "lucide-react";
 import { useCartStore } from "../store/useCartStore";
 import { submitOrder } from "../actions/submit-order";
 
 type OrderType = "DINE_IN" | "TAKEAWAY" | "DELIVERY";
 type PaymentMethod = "CASH" | "TELEBIRR" | "CBE";
+
+// Configure your account numbers here
+const TELEBIRR_NUMBER = "0911234567";
+const CBE_ACCOUNT_NUMBER = "1000123456789";
 
 export function FloatingCart() {
   const router = useRouter();
@@ -20,17 +40,19 @@ export function FloatingCart() {
   const [orderType, setOrderType] = useState<OrderType>(tableId ? "DINE_IN" : "TAKEAWAY");
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("TELEBIRR");
 
+  // Track which number was copied for visual feedback
+  const [copiedText, setCopiedText] = useState<string | null>(null);
+
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
     address: "",
+    note: "", // Added optional note field
   });
 
   const [receiptFile, setReceiptFile] = useState<File | null>(null);
   const [receiptPreview, setReceiptPreview] = useState<string | null>(null);
 
-  // Revoke the object URL when it's replaced or the component unmounts,
-  // so we don't leak memory holding onto old preview images.
   useEffect(() => {
     return () => {
       if (receiptPreview) URL.revokeObjectURL(receiptPreview);
@@ -49,6 +71,12 @@ export function FloatingCart() {
     setReceiptPreview(null);
   };
 
+  const handleCopy = (text: string) => {
+    navigator.clipboard.writeText(text);
+    setCopiedText(text);
+    setTimeout(() => setCopiedText(null), 2000);
+  };
+
   const { items, isOpen, setIsOpen, getTotalItems, getTotalPrice, updateQuantity, clearCart } = useCartStore();
   const totalItems = getTotalItems();
   const totalPrice = getTotalPrice();
@@ -58,8 +86,8 @@ export function FloatingCart() {
       alert("Please fill in your delivery address and phone number.");
       return;
     }
-    if (paymentMethod !== "CASH" && (!receiptFile)) {
-      alert("Please enter your transaction reference and upload a photo of your receipt.");
+    if (paymentMethod !== "CASH" && !receiptFile) {
+      alert("Please upload a photo of your receipt.");
       return;
     }
 
@@ -70,6 +98,7 @@ export function FloatingCart() {
         customerName: formData.name,
         customerPhone: formData.phone,
         deliveryAddress: formData.address,
+        note: formData.note, // Added note to order payload
         paymentMethod: paymentMethod,
         receiptPhoto: receiptFile,
         items: items,
@@ -242,9 +271,23 @@ export function FloatingCart() {
                         <textarea value={formData.address} onChange={(e) => setFormData({ ...formData, address: e.target.value })} placeholder="Bole, Addis Ababa..." className="w-full resize-none rounded-xl border border-border bg-background px-4 py-3 text-sm focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent" rows={2} />
                       </div>
                     )}
+                    
+                    {/* NEW: Optional Delivery or Cooking Note Field */}
+                    <div>
+                      <label className="mb-1.5 block text-xs font-bold text-text-secondary">
+                        Delivery or Cooking Note <span className="font-normal text-text-secondary/70">(Optional)</span>
+                      </label>
+                      <textarea 
+                        value={formData.note} 
+                        onChange={(e) => setFormData({ ...formData, note: e.target.value })} 
+                        placeholder="e.g., Extra spicy, ring doorbell, allergy notes..." 
+                        className="w-full resize-none rounded-xl border border-border bg-background px-4 py-3 text-sm focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent" 
+                        rows={2} 
+                      />
+                    </div>
                   </div>
 
-                  {/* Payment Method — now matches Order Type's segmented-control styling exactly */}
+                  {/* Payment Method */}
                   <div className="space-y-3">
                     <label className="block text-xs font-bold text-text-secondary">Payment Method</label>
                     <div className="grid grid-cols-3 gap-2 rounded-xl border border-border/50 bg-background-secondary p-1">
@@ -258,6 +301,60 @@ export function FloatingCart() {
                         <Store className="h-4 w-4" /> Cash
                       </button>
                     </div>
+
+                    {/* NEW: Telebirr Account Number + Copy Button */}
+                    {paymentMethod === "TELEBIRR" && (
+                      <div className="flex items-center justify-between rounded-xl border border-border/50 bg-background-secondary p-3.5">
+                        <div>
+                          <p className="text-[10px] font-bold uppercase tracking-wider text-text-secondary">Telebirr Number</p>
+                          <p className="font-mono text-sm font-bold text-text-primary">{TELEBIRR_NUMBER}</p>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => handleCopy(TELEBIRR_NUMBER)}
+                          className="flex items-center gap-1.5 rounded-lg border border-border/50 bg-background px-3 py-1.5 text-xs font-bold text-text-primary shadow-sm transition-transform active:scale-95"
+                        >
+                          {copiedText === TELEBIRR_NUMBER ? (
+                            <>
+                              <Check className="h-3.5 w-3.5 text-green-500" />
+                              <span className="text-green-500">Copied</span>
+                            </>
+                          ) : (
+                            <>
+                              <Copy className="h-3.5 w-3.5 text-text-secondary" />
+                              <span>Copy</span>
+                            </>
+                          )}
+                        </button>
+                      </div>
+                    )}
+
+                    {/* NEW: CBE Account Number + Copy Button */}
+                    {paymentMethod === "CBE" && (
+                      <div className="flex items-center justify-between rounded-xl border border-border/50 bg-background-secondary p-3.5">
+                        <div>
+                          <p className="text-[10px] font-bold uppercase tracking-wider text-text-secondary">CBE Account Number</p>
+                          <p className="font-mono text-sm font-bold text-text-primary">{CBE_ACCOUNT_NUMBER}</p>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => handleCopy(CBE_ACCOUNT_NUMBER)}
+                          className="flex items-center gap-1.5 rounded-lg border border-border/50 bg-background px-3 py-1.5 text-xs font-bold text-text-primary shadow-sm transition-transform active:scale-95"
+                        >
+                          {copiedText === CBE_ACCOUNT_NUMBER ? (
+                            <>
+                              <Check className="h-3.5 w-3.5 text-green-500" />
+                              <span className="text-green-500">Copied</span>
+                            </>
+                          ) : (
+                            <>
+                              <Copy className="h-3.5 w-3.5 text-text-secondary" />
+                              <span>Copy</span>
+                            </>
+                          )}
+                        </button>
+                      </div>
+                    )}
 
                     {paymentMethod !== "CASH" && (
                       <div className="space-y-3">

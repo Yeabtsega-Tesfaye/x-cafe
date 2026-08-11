@@ -10,6 +10,7 @@ type KitchenOrder = {
   createdAt: Date;
   table: { number: number } | null;
   customerName: string | null;
+  note: string | null; // <-- Added optional note property
   items: { id: string; name: string; quantity: number }[];
 };
 

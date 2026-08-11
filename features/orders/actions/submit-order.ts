@@ -10,6 +10,7 @@ type OrderPayload = {
   customerName?: string;
   customerPhone?: string;
   deliveryAddress?: string;
+  note?: string;
   paymentMethod: PaymentMethod;
   receiptPhoto?: File | null;
   items: { id: string; name: string; price: number; quantity: number }[];
@@ -69,6 +70,7 @@ export async function submitOrder(data: OrderPayload) {
         customerName: data.customerName || null,
         customerPhone: data.customerPhone || null,
         deliveryAddress: data.deliveryAddress || null,
+        note: data.note || null,
         paymentMethod: data.paymentMethod,
         paymentStatus,
         receiptUrl,

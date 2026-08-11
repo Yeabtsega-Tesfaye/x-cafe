@@ -1,7 +1,15 @@
 "use client";
 import { useState } from "react";
 import { OrderStatus, OrderType } from "@prisma/client";
-import { Utensils, ShoppingBag, Truck, Clock, CheckCircle, ChefHat } from "lucide-react";
+import { 
+  Utensils, 
+  ShoppingBag, 
+  Truck, 
+  Clock, 
+  CheckCircle, 
+  ChefHat, 
+  FileText 
+} from "lucide-react";
 import { updateOrderStatus } from "@/features/kitchen/actions/update-status";
 
 type OrderCardProps = {
@@ -12,6 +20,7 @@ type OrderCardProps = {
     createdAt: Date;
     table: { number: number } | null;
     customerName: string | null;
+    note: string | null;
     items: { id: string; name: string; quantity: number }[];
   };
 };
@@ -64,6 +73,17 @@ export default function OrderCard({ order }: OrderCardProps) {
           </span>
         </div>
 
+        {/* Customer Note Callout (if present) */}
+        {order.note && (
+          <div className="mt-3 flex items-start gap-2 rounded-xl border border-amber-500/20 bg-amber-500/10 p-2.5 text-xs text-amber-700 dark:text-amber-400">
+            <FileText size={14} className="mt-0.5 shrink-0" />
+            <div>
+              <span className="font-bold">Note: </span>
+              <span>{order.note}</span>
+            </div>
+          </div>
+        )}
+
         {/* Item List */}
         <div className="my-4 space-y-2">
           {order.items.map((item, idx) => (
@@ -79,7 +99,7 @@ export default function OrderCard({ order }: OrderCardProps) {
 
       {/* Footer & Action Button */}
       <div className="border-t border-border/50 pt-3">
-        <div className="flex items-center justify-between text-xs text-text-secondary mb-3">
+        <div className="mb-3 flex items-center justify-between text-xs text-text-secondary">
           <span className="flex items-center gap-1">
             <Clock size={12} /> {timeFormatted}
           </span>
@@ -89,7 +109,7 @@ export default function OrderCard({ order }: OrderCardProps) {
         <button
           onClick={handleNextStatus}
           disabled={loading}
-          className="w-full flex items-center justify-center gap-2 rounded-xl bg-accent py-5 text-xs font-bold text-white transition-all hover:opacity-90 active:scale-95 disabled:opacity-50"
+          className="flex w-full items-center justify-center gap-2 rounded-xl bg-accent py-3 text-xs font-bold text-white transition-all hover:opacity-90 active:scale-95 disabled:opacity-50"
         >
           {order.status === "PENDING" && <><ChefHat size={14} /> Start Preparing</>}
           {order.status === "PREPARING" && <><CheckCircle size={14} /> Mark Ready / Delivered</>}
