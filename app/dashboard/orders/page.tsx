@@ -1,11 +1,12 @@
 import { prisma } from "@/lib/prisma";
 import { OrderType, OrderStatus } from "@prisma/client";
 import { RoleGuard } from "@/features/auth/components/RoleGuard";
-import { ClipboardList, Search, Utensils, ShoppingBag, Truck, CheckCircle2, Clock } from "lucide-react";
+import { ClipboardList, Utensils, ShoppingBag, Truck, Clock } from "lucide-react";
+import { LucideIcon } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
-const ORDER_TYPE_ICONS: Record<OrderType, any> = {
+const ORDER_TYPE_ICONS: Record<OrderType, LucideIcon> = {
   DINE_IN: Utensils,
   TAKEAWAY: ShoppingBag,
   DELIVERY: Truck,

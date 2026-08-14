@@ -8,25 +8,47 @@ export default async function MenuTableRoute({
   params: Promise<{ tableId: string }>;
 }) {
   const resolvedParams = await params;
-  
-  // 1. Safeguard against Turbopack hot-reload glitches
+
   if (!resolvedParams?.tableId) {
-    return <div className="p-8 text-red-500">Error: No table ID provided.</div>;
+    return <div>Error: No table ID provided.</div>;
   }
 
   const table = await prisma.table.findUnique({
-    where: {
-      id: resolvedParams.tableId,
-    },
+    where: { id: resolvedParams.tableId },
   });
 
   if (!table) {
     notFound();
   }
 
+  const menuItems = await prisma.menuItem.findMany({
+    where: { isAvailable: true },
+    include: { category: true },
+    orderBy: { createdAt: "asc" },
+  });
+
+  const categories = await prisma.category.findMany({
+    orderBy: { name: "asc" },
+  });
+
+  const mappedMenu = menuItems.map((item) => ({
+    id: item.id,
+    name: item.name,
+    description: item.description || "",
+    price: item.price,
+    priceFormatted: `ETB ${item.price}`,
+    image: item.image || "/images/placeholder.jpg",
+    badge: item.badge,
+    category: item.category.name,
+  }));
+
+  const categoryList = ["All", ...categories.map((c) => c.name)];
+
   return (
-    <div>
-      <MenuPage tableNumber={table.number} tableId={table.id} />
-    </div>
+    <MenuPage
+      tableNumber={table.number}
+      menuItems={mappedMenu}
+      categories={categoryList}
+    />
   );
 }

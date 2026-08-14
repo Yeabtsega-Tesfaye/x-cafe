@@ -2,36 +2,35 @@ import {
   LayoutDashboard, 
   ChefHat, 
   ClipboardList, 
-  UtensilsCrossed, 
   BarChart3, 
   Table,
   ShoppingBag,
-  Utensils,
   CreditCard,
   Users
 } from "lucide-react";
+import { LucideIcon } from "lucide-react";
 
 export type NavItem = {
   label: string;
   href: string;
-  icon: any;
+  icon: LucideIcon;
   roles: string[];
 };
 
 export const ALL_NAV_LINKS: NavItem[] = [
   // --- MANAGER & ADMIN ROUTES ---
   {
-    href: "/dashboard", // The main landing page for managers
+    href: "/dashboard",
     label: "Overview",
     icon: LayoutDashboard,
     roles: ["manager", "admin"],
   },
-    {
-  href: "/dashboard/admin/users",
-  label: "Staff ",
-  icon: Users,
-  roles: ["admin"], // ONLY the admin should see this!
-},
+  {
+    href: "/dashboard/admin/users",
+    label: "Staff",
+    icon: Users,
+    roles: ["admin"],
+  },
   {
     href: "/dashboard/analytics",
     label: "Reports",
@@ -56,7 +55,7 @@ export const ALL_NAV_LINKS: NavItem[] = [
     href: "/dashboard/payments",
     label: "Payments",
     icon: CreditCard,
-    roles: ["cashier", "manager", "admin"], // Added admin so they can audit
+    roles: ["cashier", "manager", "admin"],
   },
   {
     href: "/dashboard/kitchen",
@@ -64,7 +63,7 @@ export const ALL_NAV_LINKS: NavItem[] = [
     icon: ChefHat,
     roles: ["kitchen", "chef", "manager", "admin"], 
   },
-    {
+  {
     href: "/dashboard/orders",
     label: "Orders",
     icon: ShoppingBag,

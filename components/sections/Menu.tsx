@@ -6,13 +6,13 @@ import { useState, useEffect } from "react";
 import { ArrowRight, Star, ShoppingBag, Plus, Check, Flame } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FadeUp, StaggerContainer, StaggerItem } from "../ui/FadeUp";
-import { FEATURED_FOOD, FULL_MENU } from "@/data/menu";
 import { useCartStore } from "@/features/orders/store/useCartStore";
 
 interface MenuItem {
+  id: string;
   name: string;
   image: string;
-  badge: string;
+  badge?: string | null;
   category: string;
   price: string;
   description: string;
@@ -160,12 +160,14 @@ function MenuCard({ item, index }: { item: MenuItem; index: number }) {
 
           <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover/card:opacity-100" />
 
-          <div className="absolute left-3 top-3 sm:left-4 sm:top-4">
-            <span className="inline-flex items-center gap-1 rounded-full bg-background/95 px-2.5 py-1 text-[11px] font-bold uppercase tracking-wider text-accent shadow-sm backdrop-blur-md ring-1 ring-border/50">
-              <Flame className="h-3 w-3" />
-              {item.badge}
-            </span>
-          </div>
+          {item.badge && (
+            <div className="absolute left-3 top-3 sm:left-4 sm:top-4">
+              <span className="inline-flex items-center gap-1 rounded-full bg-background/95 px-2.5 py-1 text-[11px] font-bold uppercase tracking-wider text-accent shadow-sm backdrop-blur-md ring-1 ring-border/50">
+                <Flame className="h-3 w-3" />
+                {item.badge}
+              </span>
+            </div>
+          )}
 
           <div className="absolute bottom-3 right-3 sm:bottom-4 sm:right-4">
             <span className="inline-block rounded-lg bg-background/95 px-3 py-1.5 text-sm font-bold text-text-primary shadow-lg backdrop-blur-md ring-1 ring-border/50">
@@ -198,7 +200,7 @@ function MenuCard({ item, index }: { item: MenuItem; index: number }) {
             <AddToCartButton
               onAdd={() =>
                 addItem({
-                  id: item.name,
+                  id: item.id,
                   name: item.name,
                   price: parsePrice(item.price),
                 })
@@ -211,7 +213,15 @@ function MenuCard({ item, index }: { item: MenuItem; index: number }) {
   );
 }
 
-export default function Menu() {
+export default function Menu({
+  featuredItems,
+  menuItems,
+  categories,
+}: {
+  featuredItems: MenuItem[];
+  menuItems: MenuItem[];
+  categories: string[];
+}) {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -288,8 +298,8 @@ export default function Menu() {
                 transition={{ duration: 0.5 }}
               >
                 <StaggerContainer className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 sm:gap-5">
-                  {FEATURED_FOOD.map((item, index) => (
-                    <MenuCard key={item.name} item={item} index={index} />
+                  {featuredItems.map((item, index) => (
+                    <MenuCard key={item.id} item={item} index={index} />
                   ))}
                 </StaggerContainer>
               </motion.div>
@@ -308,7 +318,7 @@ export default function Menu() {
               <ArrowRight className="relative z-10 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1 sm:h-5 sm:w-5" />
               <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
             </Link>
-            <span className="text-sm text-text-muted">{FULL_MENU.length}+ dishes available</span>
+            <span className="text-sm text-text-muted">{menuItems.length}+ dishes available</span>
           </div>
         </FadeUp>
       </div>
